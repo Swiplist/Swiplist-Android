@@ -61,8 +61,7 @@ dependencies {
     // alternatively, just LiveData
     implementation "android.arch.lifecycle:livedata:1.1.1"
 
-    // Java8 support for Lifecycles
-    implementation "android.arch.lifecycle:common-java8:1.1.1"
+    annotationProcessor "android.arch.lifecycle:compiler:1.1.1"
 
     // Room (use 1.1.0-beta3 for latest beta)
     implementation "android.arch.persistence.room:runtime:1.0.0"
