@@ -1,27 +1,32 @@
 package com.energy0124.swiplist.feature
 
 import android.os.Bundle
-import android.support.design.widget.Snackbar
 import android.support.design.widget.NavigationView
 import android.support.v4.view.GravityCompat
+import android.support.v4.view.ViewPager
 import android.support.v7.app.ActionBarDrawerToggle
 import android.support.v7.app.AppCompatActivity
 import android.view.Menu
 import android.view.MenuItem
+import android.widget.Toast
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.app_bar_main.*
+import kotlinx.android.synthetic.main.content_main.*
 
 class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
+
+//    private lateinit var mSectionsPageAdapter: SectionsPageAdaptor
+    private lateinit var mViewPager: ViewPager
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         setSupportActionBar(toolbar)
 
-        fab.setOnClickListener { view ->
-            Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                    .setAction("Action", null).show()
-        }
+        val tabLayout = main_tabs
+        mViewPager = main_viewpager
+        setupViewPager(mViewPager)
+        tabLayout.setupWithViewPager(mViewPager)
 
         val toggle = ActionBarDrawerToggle(
                 this, drawer_layout, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close)
@@ -29,6 +34,14 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         toggle.syncState()
 
         nav_view.setNavigationItemSelectedListener(this)
+    }
+
+    private fun setupViewPager(viewPager: ViewPager) {
+        val adapter = SectionsPageAdaptor(supportFragmentManager)
+        adapter.addFragment(OverviewFragment(), getString(R.string.tab_overview))
+        adapter.addFragment(ViewItemFragment(), getString(R.string.tab_view_items))
+        adapter.addFragment(ViewFriendFragment(), getString(R.string.tab_view_friends))
+        viewPager.adapter = adapter
     }
 
     override fun onBackPressed() {
@@ -41,7 +54,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         // Inflate the menu; this adds items to the action bar if it is present.
-        menuInflater.inflate(R.menu.main, menu)
+        menuInflater.inflate(R.menu.main_app_bar_menu, menu)
         return true
     }
 
@@ -50,7 +63,18 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         when (item.itemId) {
-            R.id.action_settings -> return true
+            R.id.action_settings -> {
+                Toast.makeText(applicationContext, "Settings", Toast.LENGTH_SHORT).show()
+                return true
+            }
+            R.id.action_ranking -> {
+                Toast.makeText(applicationContext, "Ranking", Toast.LENGTH_SHORT).show()
+                return true
+            }
+            R.id.action_search -> {
+                Toast.makeText(applicationContext, "Search", Toast.LENGTH_SHORT).show()
+                return true
+            }
             else -> return super.onOptionsItemSelected(item)
         }
     }
