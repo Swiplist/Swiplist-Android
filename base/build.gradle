@@ -29,7 +29,6 @@ dependencies {
     application project(':app')
     feature project(':feature')
 
-
     //use Fuel as rest client
     //https://github.com/kittinunf/Fuel
     api 'com.github.kittinunf.fuel:fuel:1.13.0'

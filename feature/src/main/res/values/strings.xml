@@ -1,5 +1,10 @@
 <resources>
 
+    <string name="server_base_url">http://10.0.2.2:4040</string>
+    <string name="preference_file_key">preferenceFileKey</string>
+    <string name="authorization_key">authorizationKey</string>
+
+    <!-- Strings related to main activity -->
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
     <string name="nav_header_title">Android Studio</string>
@@ -11,10 +16,6 @@
     <string name="tab_overview">Overview</string>
     <string name="tab_view_items">Item</string>
     <string name="tab_view_friends">Friend</string>
-    <string name="title_activity_login">Log in</string>
-    <string name="title_activity_register">Register</string>
-
-    <string name="server_base_url">http://something.com</string>
 
     <!-- Strings related to login and register -->
     <string name="prompt_email">Email</string>
@@ -30,6 +31,7 @@
     <string name="error_invalid_password">This password is too short</string>
     <string name="error_incorrect_password">This password is incorrect</string>
     <string name="error_field_required">This field is required</string>
+    <string name="error_confirm_not_match">The confirmation password does not match</string>
     <string name="permission_rationale">"Contacts permissions are needed for providing email
         completions."
     </string>
