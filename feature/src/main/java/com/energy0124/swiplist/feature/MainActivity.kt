@@ -1,5 +1,6 @@
 package com.energy0124.swiplist.feature
 
+import android.content.Intent
 import android.os.Bundle
 import android.support.design.widget.NavigationView
 import android.support.v4.view.GravityCompat
@@ -73,6 +74,8 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             }
             R.id.action_search -> {
                 Toast.makeText(applicationContext, "Search", Toast.LENGTH_SHORT).show()
+                val intent = Intent(this, SearchActivity::class.java)
+                startActivity(intent)
                 return true
             }
             else -> return super.onOptionsItemSelected(item)

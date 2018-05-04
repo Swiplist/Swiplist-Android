@@ -36,4 +36,7 @@
         completions."
     </string>
 
+    <!-- String related to search -->
+    <string name="search_hint">Type anything here</string>
+
 </resources>
