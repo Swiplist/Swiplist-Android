@@ -1,7 +1,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.energy0124.swiplist.app">
 
-    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.INTERNET" />
 
     <application>
         <activity
@@ -73,10 +73,11 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name="com.energy0124.swiplist.feature.SearchActivity"
+        <activity
+            android:name="com.energy0124.swiplist.feature.SearchActivity"
             android:label=""
-            android:theme="@style/AppTheme"
-            android:parentActivityName="com.energy0124.swiplist.feature.MainActivity">
+            android:parentActivityName="com.energy0124.swiplist.feature.MainActivity"
+            android:theme="@style/AppTheme">
             <intent-filter android:order="1">
                 <action android:name="android.intent.action.VIEW" />
 
@@ -93,17 +94,17 @@
             android:name="com.energy0124.swiplist.feature.ProfileActivity"
             android:label="@string/title_activity_profile"
             android:theme="@style/AppTheme.NoActionBar">
-        <intent-filter android:order="1">
-            <action android:name="android.intent.action.VIEW" />
+            <intent-filter android:order="1">
+                <action android:name="android.intent.action.VIEW" />
 
-            <category android:name="android.intent.category.BROWSABLE" />
-            <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <category android:name="android.intent.category.DEFAULT" />
 
-            <data
-                android:host="example.com"
-                android:pathPattern="/.*"
-                android:scheme="https" />
-        </intent-filter>
+                <data
+                    android:host="energy0124"
+                    android:pathPattern="/.*"
+                    android:scheme="https" />
+            </intent-filter>
         </activity>
     </application>
 </manifest>
