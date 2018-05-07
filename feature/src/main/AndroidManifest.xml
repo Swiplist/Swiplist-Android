@@ -74,10 +74,11 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".SearchActivity"
+        <activity
+            android:name=".SearchActivity"
             android:label=""
-            android:theme="@style/AppTheme"
-            android:parentActivityName=".MainActivity">
+            android:parentActivityName=".MainActivity"
+            android:theme="@style/AppTheme">
             <intent-filter android:order="1">
                 <action android:name="android.intent.action.VIEW" />
 
@@ -86,6 +87,22 @@
 
                 <data
                     android:host="energy0124"
+                    android:pathPattern="/.*"
+                    android:scheme="https" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".ProfileActivity"
+            android:label="@string/title_activity_profile"
+            android:theme="@style/AppTheme.NoActionBar">
+            <intent-filter android:order="1">
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.BROWSABLE" />
+                <category android:name="android.intent.category.DEFAULT" />
+
+                <data
+                    android:host="example.com"
                     android:pathPattern="/.*"
                     android:scheme="https" />
             </intent-filter>
