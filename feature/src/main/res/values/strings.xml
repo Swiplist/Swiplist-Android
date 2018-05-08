@@ -7,8 +7,7 @@
     <!-- Strings related to main activity -->
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
-    <string name="nav_header_title">Android Studio</string>
-    <string name="nav_header_subtitle">android.studio@android.com</string>
+    <string name="nav_username">Username</string>
     <string name="nav_header_desc">Navigation header</string>
     <string name="action_settings">Settings</string>
     <string name="action_search">Search</string>
@@ -38,6 +37,14 @@
 
     <!-- String related to search -->
     <string name="search_hint">Type anything here</string>
+
+    <!-- String related to profile -->
     <string name="section_format">Hello World from section: %1$d</string>
+
+    <!-- Strings related to navigation menu -->
+    <string name="nav_home">Home</string>
+    <string name="nav_import_data">Import Data</string>
+    <string name="nav_setting">Setting</string>
+    <string name="nav_logout">Logout</string>
 
 </resources>

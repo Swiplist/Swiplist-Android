@@ -9,14 +9,17 @@ import android.support.v7.app.ActionBarDrawerToggle
 import android.support.v7.app.AppCompatActivity
 import android.view.Menu
 import android.view.MenuItem
+import android.view.View
+import android.widget.ImageButton
 import android.widget.Toast
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.app_bar_main.*
 import kotlinx.android.synthetic.main.content_main.*
+import kotlinx.android.synthetic.main.nav_header_main.*
 
 class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
 
-//    private lateinit var mSectionsPageAdapter: SectionsPageAdaptor
+    //    private lateinit var mSectionsPageAdapter: SectionsPageAdaptor
     private lateinit var mViewPager: ViewPager
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -35,6 +38,12 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         toggle.syncState()
 
         nav_view.setNavigationItemSelectedListener(this)
+        val navHeader =  nav_view.getHeaderView(0)
+        val profileButton = navHeader.findViewById<ImageButton>(R.id.nav_profile_picture)
+        profileButton.setOnClickListener {
+            val intent = Intent(this@MainActivity, ProfileActivity::class.java)
+            startActivity(intent)
+        }
     }
 
     private fun setupViewPager(viewPager: ViewPager) {
@@ -85,22 +94,16 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
         // Handle navigation view item clicks here.
         when (item.itemId) {
-            R.id.nav_camera -> {
-                // Handle the camera action
-            }
-            R.id.nav_gallery -> {
+            R.id.nav_home -> {
 
             }
-            R.id.nav_slideshow -> {
+            R.id.nav_import_data -> {
 
             }
-            R.id.nav_manage -> {
+            R.id.nav_setting -> {
 
             }
-            R.id.nav_share -> {
-
-            }
-            R.id.nav_send -> {
+            R.id.nav_logout -> {
 
             }
         }

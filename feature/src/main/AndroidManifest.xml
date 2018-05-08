@@ -94,6 +94,7 @@
         <activity
             android:name=".ProfileActivity"
             android:label="@string/title_activity_profile"
+            android:parentActivityName=".MainActivity"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter android:order="1">
                 <action android:name="android.intent.action.VIEW" />
