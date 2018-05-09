@@ -94,7 +94,7 @@
             android:name="com.energy0124.swiplist.feature.ProfileActivity"
             android:label="@string/title_activity_profile"
             android:parentActivityName="com.energy0124.swiplist.feature.MainActivity"
-            android:theme="@style/AppTheme.NoActionBar">
+            android:theme="@style/AppTheme">
             <intent-filter android:order="1">
                 <action android:name="android.intent.action.VIEW" />
 
