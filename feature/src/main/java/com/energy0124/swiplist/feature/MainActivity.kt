@@ -106,10 +106,10 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                         // set the user info in the navigation bar
                         val navHeader = nav_view.getHeaderView(0)
                         val navHeaderUserTextView = navHeader.findViewById<TextView>(R.id.nav_username)
-                        navHeaderUserTextView.text = userMap.get("username").toString()
+                        navHeaderUserTextView.text = username
                         //Log.d("text", navHeaderUserTextView.text.toString())
                         val navHeaderProfileButton = navHeader.findViewById<ImageButton>(R.id.nav_profile_picture)
-                        if("" != (userMap.get("iconUrl"))){
+                        if("" != iconUrl){
                             //  navHeaderProfileButton.setImageResource(R.drawable.ic_exit_to_app_black_18dp)
                         }
 
