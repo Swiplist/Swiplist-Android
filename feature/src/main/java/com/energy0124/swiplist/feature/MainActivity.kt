@@ -1,5 +1,6 @@
 package com.energy0124.swiplist.feature
 
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.support.design.widget.NavigationView
@@ -7,25 +8,36 @@ import android.support.v4.view.GravityCompat
 import android.support.v4.view.ViewPager
 import android.support.v7.app.ActionBarDrawerToggle
 import android.support.v7.app.AppCompatActivity
+import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.widget.ImageButton
+import android.widget.TextView
 import android.widget.Toast
+import com.github.kittinunf.fuel.Fuel
+import com.github.kittinunf.fuel.core.FuelManager
+import com.github.kittinunf.result.Result
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.app_bar_main.*
 import kotlinx.android.synthetic.main.content_main.*
 import kotlinx.android.synthetic.main.nav_header_main.*
+import org.json.JSONArray
+import org.json.JSONObject
+import org.json.JSONString
 
 class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
 
     //    private lateinit var mSectionsPageAdapter: SectionsPageAdaptor
     private lateinit var mViewPager: ViewPager
+    private var userMap = mapOf<String, Any?>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         setSupportActionBar(toolbar)
+
+        userSetUp()
 
         val tabLayout = main_tabs
         mViewPager = main_viewpager
@@ -38,10 +50,11 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         toggle.syncState()
 
         nav_view.setNavigationItemSelectedListener(this)
-        val navHeader =  nav_view.getHeaderView(0)
-        val profileButton = navHeader.findViewById<ImageButton>(R.id.nav_profile_picture)
-        profileButton.setOnClickListener {
-            val intent = Intent(this@MainActivity, ProfileActivity::class.java)
+        val navHeader = nav_view.getHeaderView(0)
+
+        val navHeaderProfileButton = navHeader.findViewById<ImageButton>(R.id.nav_profile_picture)
+        navHeaderProfileButton.setOnClickListener {
+            val intent = Intent(this, ProfileActivity::class.java)
             startActivity(intent)
         }
     }
@@ -52,6 +65,60 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         adapter.addFragment(ViewItemFragment(), getString(R.string.tab_view_items))
         adapter.addFragment(ViewFriendFragment(), getString(R.string.tab_view_friends))
         viewPager.adapter = adapter
+    }
+
+    private fun userSetUp() {
+        val sharePref = this.getSharedPreferences(getString(R.string.preference_file_key), Context.MODE_PRIVATE)
+        val token = sharePref.getString(getString(R.string.authorization_key), "null")
+        //Log.d("token", token)
+        FuelManager.instance.baseHeaders = mapOf("Authorization" to "Bearer $token")
+        Fuel.get(getString(R.string.server_base_url) + "/api/users/me").response { request, response, result ->
+            //make request to https://httpbin.org/get because Fuel.{get|post|put|delete} use FuelManager.instance to make HTTP request
+            //Log.d("response", response.toString())
+            //Log.d("result", result.toString())
+            when (result) {
+                is Result.Success -> {
+                    if (response.statusCode == 200) {     // HTTP OK
+                        val responseBody = String(response.data)
+                        val username: String = JSONObject(responseBody).getString("username")
+                        val email: String = JSONObject(responseBody).getString("email")
+                        val items: JSONArray? = JSONObject(responseBody).optJSONArray("items")
+                        val friends: JSONArray? = JSONObject(responseBody).optJSONArray("friends")
+                        val iconUrl: String? = JSONObject(responseBody).optString("iconUrl")
+                        /*userMap = mapOf("username" to username,
+                                "email" to email,
+                                "items" to items,
+                                "friends" to friends,
+                                "iconUrl" to iconUrl)
+                        Log.d("map", userMap.toString())*/
+                        val userInfoJson = JSONObject()
+                        userInfoJson.put("username", username)
+                        userInfoJson.put("email", email)
+                        userInfoJson.put("items", items)
+                        userInfoJson.put("friends", friends)
+                        userInfoJson.put("iconUrl", iconUrl)
+                        //Log.d("jsonObj", userInfoJson.toString())
+                        with(sharePref.edit()) {
+                            putString(getString(R.string.user_info_key), userInfoJson.toString())
+                            commit()
+                        }
+
+                        // set the user info in the navigation bar
+                        val navHeader = nav_view.getHeaderView(0)
+                        val navHeaderUserTextView = navHeader.findViewById<TextView>(R.id.nav_username)
+                        navHeaderUserTextView.text = userMap.get("username").toString()
+                        //Log.d("text", navHeaderUserTextView.text.toString())
+                        val navHeaderProfileButton = navHeader.findViewById<ImageButton>(R.id.nav_profile_picture)
+                        if("" != (userMap.get("iconUrl"))){
+                            //  navHeaderProfileButton.setImageResource(R.drawable.ic_exit_to_app_black_18dp)
+                        }
+
+                        //val user = sharePref.getString(getString(R.string.user_info_key), "null")
+                        //Log.d("user", user)
+                    }
+                }
+            }
+        }
     }
 
     override fun onBackPressed() {
