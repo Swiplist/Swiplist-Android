@@ -85,6 +85,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                         val items: JSONArray? = JSONObject(responseBody).optJSONArray("items")
                         val friends: JSONArray? = JSONObject(responseBody).optJSONArray("friends")
                         val iconUrl: String? = JSONObject(responseBody).optString("iconUrl")
+                        val description: String? = JSONObject(responseBody).optString("description")
                         /*userMap = mapOf("username" to username,
                                 "email" to email,
                                 "items" to items,
@@ -97,6 +98,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                         userInfoJson.put("items", items)
                         userInfoJson.put("friends", friends)
                         userInfoJson.put("iconUrl", iconUrl)
+                        userInfoJson.put("description", description)
                         //Log.d("jsonObj", userInfoJson.toString())
                         with(sharePref.edit()) {
                             putString(getString(R.string.user_info_key), userInfoJson.toString())
@@ -109,13 +111,21 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                         navHeaderUserTextView.text = username
                         //Log.d("text", navHeaderUserTextView.text.toString())
                         val navHeaderProfileButton = navHeader.findViewById<ImageButton>(R.id.nav_profile_picture)
-                        if("" != iconUrl){
+                        if ("" != iconUrl) {
                             //  navHeaderProfileButton.setImageResource(R.drawable.ic_exit_to_app_black_18dp)
+                        } else {
+                            navHeaderProfileButton.setImageResource(R.drawable.ic_account_box_black_48dp)
                         }
 
-                        //val user = sharePref.getString(getString(R.string.user_info_key), "null")
-                        //Log.d("user", user)
+                        // val user = sharePref.getString(getString(R.string.user_info_key), "null")
+                        // Log.d("user", user)
                     }
+                }
+                is Result.Failure -> {
+                    val ex = result.getException()
+                    Log.d("re-exception", ex.toString())
+                    Toast.makeText(applicationContext, ex.toString(),
+                            Toast.LENGTH_LONG).show()
                 }
             }
         }

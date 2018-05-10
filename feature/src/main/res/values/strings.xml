@@ -48,4 +48,11 @@
     <string name="nav_setting">Setting</string>
     <string name="nav_logout">Logout</string>
 
+    <!-- Strings related to profile fragment -->
+    <string name="profile_about_me_tag">About me</string>
+    <string name="profile_description">No Description</string>
+    <string name="profile_contact_tag">Contact</string>
+    <string name="profile_email_tag">Email</string>
+    <string name="profile_email">No Email</string>
+
 </resources>
