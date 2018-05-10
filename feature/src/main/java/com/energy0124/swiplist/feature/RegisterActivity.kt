@@ -43,7 +43,7 @@ class RegisterActivity : AppCompatActivity() {
                     register_confirm_password.error = getString(R.string.error_confirm_not_match)
                 } else {
                     // TODO: send authorization request to server
-                    Fuel.post(getString(R.string.server_base_url)+"/api/auth/register",
+                    Fuel.post(getString(R.string.server_base_url) + "/api/auth/register",
                             listOf("username" to tUsername,
                                     "password" to tPassword,
                                     "email" to tEmail))
@@ -60,6 +60,7 @@ class RegisterActivity : AppCompatActivity() {
                                             val intent = Intent(this,
                                                     LoginActivity::class.java)
                                             startActivity(intent)
+                                            finish()
                                         } else {
                                             Toast.makeText(applicationContext, "registration failed",
                                                     Toast.LENGTH_LONG).show()

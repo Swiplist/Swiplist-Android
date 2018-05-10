@@ -56,6 +56,7 @@ class LoginActivity : AppCompatActivity() {
                                         // start main activity
                                         val intent = Intent(this, MainActivity::class.java)
                                         startActivity(intent)
+                                        finish()
                                     }
                                 }
                                 is Result.Failure -> {

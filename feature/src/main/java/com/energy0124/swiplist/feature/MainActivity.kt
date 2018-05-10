@@ -181,7 +181,11 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
             }
             R.id.nav_logout -> {
-
+                val sharePref = this.getSharedPreferences(getString(R.string.preference_file_key), Context.MODE_PRIVATE)
+                sharePref.edit().clear().commit()
+                val intent = Intent(this, LoginActivity::class.java)
+                startActivity(intent)
+                finish()
             }
         }
 
