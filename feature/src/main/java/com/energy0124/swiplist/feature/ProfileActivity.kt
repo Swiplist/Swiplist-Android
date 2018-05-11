@@ -89,7 +89,7 @@ class ProfileActivity : AppCompatActivity() {
         override fun getItem(position: Int): Fragment {
             return when (position) {
                 0 -> ProfileFragment()
-                1 -> ViewItemFragment() // temp, need to make another fragment
+                1 -> ProfileViewItemFragment() // temp, need to make another fragment
                 2 -> ProfileViewFriendFragment()   // temp, need to make another fragment
                 else -> ProfileFragment()
             }

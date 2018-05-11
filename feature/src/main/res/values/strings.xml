@@ -47,6 +47,11 @@
     <string name="view_friend_gender_tag">Gender:</string>
     <string name="view_friend_detail_not_available">Not Available</string>
 
+    <!-- String related to view item -->
+    <string name="view_item_game_button">Game</string>
+    <string name="view_item_anime_button">Anime</string>
+    <string name="view_item_manga_button">Manga</string>
+
     <!-- Strings related to navigation menu -->
     <string name="nav_home">Home</string>
     <string name="nav_import_data">Import Data</string>

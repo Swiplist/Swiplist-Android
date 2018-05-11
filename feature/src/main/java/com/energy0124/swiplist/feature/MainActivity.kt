@@ -11,7 +11,6 @@ import android.support.v7.app.AppCompatActivity
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
-import android.view.View
 import android.widget.ImageButton
 import android.widget.TextView
 import android.widget.Toast
@@ -21,14 +20,12 @@ import com.github.kittinunf.result.Result
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.app_bar_main.*
 import kotlinx.android.synthetic.main.content_main.*
-import kotlinx.android.synthetic.main.nav_header_main.*
 import org.json.JSONArray
 import org.json.JSONObject
-import org.json.JSONString
 
 class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
 
-    //    private lateinit var mSectionsPageAdapter: SectionsPageAdaptor
+    //    private lateinit var mSectionsPageAdapter: SectionsPageAdapter
     private lateinit var mViewPager: ViewPager
     private var userMap = mapOf<String, Any?>()
 
@@ -56,11 +53,12 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         navHeaderProfileButton.setOnClickListener {
             val intent = Intent(this, ProfileActivity::class.java)
             startActivity(intent)
+            drawer_layout.closeDrawers()
         }
     }
 
     private fun setupViewPager(viewPager: ViewPager) {
-        val adapter = SectionsPageAdaptor(supportFragmentManager)
+        val adapter = SectionsPageAdapter(supportFragmentManager)
         adapter.addFragment(OverviewFragment(), getString(R.string.tab_overview))
         adapter.addFragment(ViewItemFragment(), getString(R.string.tab_view_items))
         adapter.addFragment(ViewFriendFragment(), getString(R.string.tab_view_friends))
@@ -156,6 +154,8 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             }
             R.id.action_ranking -> {
                 Toast.makeText(applicationContext, "Ranking", Toast.LENGTH_SHORT).show()
+                val intent = Intent(this, RankingActivity::class.java)
+                startActivity(intent)
                 return true
             }
             R.id.action_search -> {
