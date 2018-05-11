@@ -3,5 +3,6 @@
     <string name="title_activity_login">Log in</string>
     <string name="title_activity_register">Register</string>
     <string name="title_activity_search">Search</string>
-    <string name="title_activity_profile">ProfileActivity</string>
+    <string name="title_activity_profile">Profile</string>
+    <string name="title_activity_import_data">Import Data</string>
 </resources>

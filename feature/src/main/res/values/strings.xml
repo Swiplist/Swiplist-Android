@@ -55,4 +55,9 @@
     <string name="profile_email_tag">Email</string>
     <string name="profile_email">No Email</string>
 
+    <!-- Strings related to import data -->
+    <string name="import_data_text_hint">Type Here</string>
+    <string name="import_data_username">Username</string>
+    <string name="import_data_user_id">User ID</string>
+
 </resources>

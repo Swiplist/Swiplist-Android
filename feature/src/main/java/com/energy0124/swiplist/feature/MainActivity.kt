@@ -175,7 +175,8 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
             }
             R.id.nav_import_data -> {
-
+                val intent = Intent(this, ImportDataActivity::class.java)
+                startActivity(intent)
             }
             R.id.nav_setting -> {
 
