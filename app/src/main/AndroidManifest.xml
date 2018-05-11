@@ -108,7 +108,25 @@
             </intent-filter>
         </activity>
         <activity android:name="com.energy0124.swiplist.feature.ViewFriendActivity"
-            android:label="@string/title_activity_view_friend">
+            android:label="@string/title_activity_view_friend"
+            android:theme="@style/AppTheme">
+            <intent-filter android:order="1">
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.BROWSABLE" />
+                <category android:name="android.intent.category.DEFAULT" />
+
+                <data
+                    android:host="energy0124"
+                    android:pathPattern="/.*"
+                    android:scheme="https" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name="com.energy0124.swiplist.feature.ImportDataActivity"
+            android:label="@string/title_activity_import_data"
+            android:parentActivityName="com.energy0124.swiplist.feature.MainActivity"
+            android:theme="@style/AppTheme">
             <intent-filter android:order="1">
                 <action android:name="android.intent.action.VIEW" />
 
