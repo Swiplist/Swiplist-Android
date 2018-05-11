@@ -1,22 +1,16 @@
 package com.energy0124.swiplist.feature
 
+import android.os.Bundle
 import android.support.design.widget.Snackbar
-import android.support.v7.app.AppCompatActivity
-
+import android.support.design.widget.TabLayout
 import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentManager
 import android.support.v4.app.FragmentPagerAdapter
 import android.support.v4.view.ViewPager
-import android.os.Bundle
-import android.support.design.widget.TabLayout
-import android.view.LayoutInflater
+import android.support.v7.app.AppCompatActivity
 import android.view.Menu
 import android.view.MenuItem
-import android.view.View
-import android.view.ViewGroup
-
 import kotlinx.android.synthetic.main.activity_profile.*
-import kotlinx.android.synthetic.main.fragment_profile.view.*
 
 class ProfileActivity : AppCompatActivity() {
 
@@ -60,13 +54,13 @@ class ProfileActivity : AppCompatActivity() {
         // Handle action bar item clicks here. The action bar will
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
-        val id = item.itemId
-
-        if (id == R.id.action_settings) {
-            return true
+        when (item.itemId) {
+            android.R.id.home -> {
+                onBackPressed()
+                return true
+            }
+            else -> return super.onOptionsItemSelected(item)
         }
-
-        return super.onOptionsItemSelected(item)
     }
 
     private fun configureTabLayout(container: ViewPager) {
@@ -96,7 +90,7 @@ class ProfileActivity : AppCompatActivity() {
             return when (position) {
                 0 -> ProfileFragment()
                 1 -> ViewItemFragment() // temp, need to make another fragment
-                2 -> ViewFriendFragment()   // temp, need to make another fragment
+                2 -> ProfileViewFriendFragment()   // temp, need to make another fragment
                 else -> ProfileFragment()
             }
             // getItem is called to instantiate the fragment for the given page.

@@ -108,6 +108,20 @@
                     android:scheme="https" />
             </intent-filter>
         </activity>
+        <activity android:name=".ViewFriendActivity"
+            android:label="@string/title_activity_view_friend">
+            <intent-filter android:order="1">
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.BROWSABLE" />
+                <category android:name="android.intent.category.DEFAULT" />
+
+                <data
+                    android:host="energy0124"
+                    android:pathPattern="/.*"
+                    android:scheme="https" />
+            </intent-filter>
+        </activity>
     </application>
 
 </manifest>

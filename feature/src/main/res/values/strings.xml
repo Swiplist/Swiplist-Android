@@ -42,6 +42,11 @@
     <!-- String related to profile -->
     <string name="section_format">Hello World from section: %1$d</string>
 
+    <!-- String related to view friend -->
+    <string name="view_friend_username_tag">Username:</string>
+    <string name="view_friend_gender_tag">Gender:</string>
+    <string name="view_friend_detail_not_available">Not Available</string>
+
     <!-- Strings related to navigation menu -->
     <string name="nav_home">Home</string>
     <string name="nav_import_data">Import Data</string>
@@ -54,5 +59,8 @@
     <string name="profile_contact_tag">Contact</string>
     <string name="profile_email_tag">Email</string>
     <string name="profile_email">No Email</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 
 </resources>
