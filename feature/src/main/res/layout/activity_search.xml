@@ -1,15 +1,71 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     tools:context=".SearchActivity">
 
-    <ScrollView
-        android:id="@+id/search_scrollview"
+    <RadioGroup
+        android:id="@+id/search_filter_button_group"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="60dp"
+        android:checkedButton="@+id/search_item_filter_button"
+        android:orientation="horizontal"
+        android:padding="10dp"
+        android:background="@color/colorPrimary">
 
-    </ScrollView>
-</android.support.constraint.ConstraintLayout>
+        <RadioButton
+            android:id="@+id/search_item_filter_button"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:text="@string/search_item_filter"
+            android:textSize="18sp" />
+
+        <RadioButton
+            android:id="@+id/search_user_filter_button"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:text="@string/search_user_filter"
+            android:textSize="18sp" />
+
+    </RadioGroup>
+
+    <LinearLayout
+        android:id="@+id/search_checkbox_container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:padding="6dp"
+        android:orientation="horizontal"
+        android:visibility="visible">
+
+        <CheckBox
+            android:id="@+id/game_option_checkbox"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/search_game_option"
+            android:textSize="16sp" />
+
+        <CheckBox
+            android:id="@+id/anime_option_checkbox"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/search_anime_option"
+            android:textSize="16sp" />
+
+        <CheckBox
+            android:id="@+id/manga_option_checkbox"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/search_manga_option"
+            android:textSize="16sp" />
+    </LinearLayout>
+
+</LinearLayout>

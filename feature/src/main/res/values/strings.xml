@@ -38,6 +38,11 @@
 
     <!-- String related to search -->
     <string name="search_hint">Type anything here</string>
+    <string name="search_item_filter">Item</string>
+    <string name="search_user_filter">User</string>
+    <string name="search_game_option">Game</string>
+    <string name="search_anime_option">Anime</string>
+    <string name="search_manga_option">Manga</string>
 
     <!-- String related to profile -->
     <string name="section_format">Hello World from section: %1$d</string>

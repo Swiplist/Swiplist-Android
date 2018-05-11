@@ -11,6 +11,7 @@ class SplashScreenActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_splash_screen)
+        supportActionBar?.elevation = 0f
 
         Handler().postDelayed({
             if (!isFinishing) {
