@@ -97,6 +97,8 @@ class ProfileActivity : AppCompatActivity() {
                     }
                     2 -> {
                         // Edit Friend List
+                        val intent = Intent(this, ProfileEditFriendActivity::class.java)
+                        startActivity(intent)
                     }
                     else -> {
 
