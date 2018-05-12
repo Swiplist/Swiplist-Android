@@ -6,4 +6,6 @@
     <dimen name="nav_header_height">176dp</dimen>
     <dimen name="fab_margin">16dp</dimen>
     <dimen name="appbar_padding_top">8dp</dimen>
+    <dimen name="profile_list_cell_delete_btn_width">48dp</dimen>
+    <dimen name="profile_list_cell_text_height">66dip</dimen>
 </resources>
