@@ -43,6 +43,9 @@
     <string name="search_game_option">Game</string>
     <string name="search_anime_option">Anime</string>
     <string name="search_manga_option">Manga</string>
+    <string name="search_item_title">ITEMS: %1$s</string>
+    <string name="search_user_title">USERS: %1$s</string>
+    <string name="search_result_not_found">No search result</string>
 
     <!-- String related to profile -->
     <string name="section_format">Hello World from section: %1$d</string>

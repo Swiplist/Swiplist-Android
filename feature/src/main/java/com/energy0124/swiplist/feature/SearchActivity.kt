@@ -1,5 +1,6 @@
 package com.energy0124.swiplist.feature
 
+import android.content.Intent
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.util.Log
@@ -58,25 +59,50 @@ class SearchActivity : AppCompatActivity() {
 
             override fun onQueryTextSubmit(query: String?): Boolean {
                 var fullQuery = ""
-                //Toast.makeText(applicationContext, query, Toast.LENGTH_LONG).show()
-                mSearchView.clearFocus()
+                var searchType = ""
+                val category = ArrayList<String>()
+
                 // TODO: add search function on the query string
                 if (isSearchingItem) {
+                    var hasCategory = false
                     fullQuery += "item:"
+                    searchType = "item"
                     if (game_option_checkbox.isChecked) {
                         fullQuery += " game"
+                        category.add("game")
+                        hasCategory = true
                     }
                     if (anime_option_checkbox.isChecked) {
                         fullQuery += " anime"
+                        category.add("anime")
+                        hasCategory = true
                     }
                     if (manga_option_checkbox.isChecked) {
                         fullQuery += " manga"
+                        category.add("manga")
+                        hasCategory = true
+                    }
+                    if (!hasCategory) {
+                        Toast.makeText(applicationContext, "Please choose at least one category",
+                                Toast.LENGTH_LONG).show()
+                        return false
                     }
                 } else {
                     fullQuery += "user:"
+                    searchType = "user"
                 }
                 fullQuery += " $query"
                 Toast.makeText(applicationContext, fullQuery, Toast.LENGTH_LONG).show()
+
+                val intent = Intent(applicationContext, SearchResultActivity::class.java)
+                intent.putExtra("searchType", searchType)
+                intent.putExtra("query", query)
+                if (isSearchingItem) {
+                    intent.putExtra("category", category)
+                }
+                startActivity(intent)
+                mSearchView.clearFocus()
+                mSearchView.setQuery("", false)
                 return false
             }
 

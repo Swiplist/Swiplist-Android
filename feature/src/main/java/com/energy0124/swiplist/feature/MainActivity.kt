@@ -53,7 +53,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         navHeaderProfileButton.setOnClickListener {
             val intent = Intent(this, ProfileActivity::class.java)
             startActivity(intent)
-            drawer_layout.closeDrawers()
+            drawer_layout.closeDrawer(GravityCompat.START)
         }
     }
 
