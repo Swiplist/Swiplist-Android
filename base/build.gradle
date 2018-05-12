@@ -97,4 +97,6 @@ dependencies {
     api 'com.squareup.moshi:moshi:1.5.0'
 
     api 'com.squareup.moshi:moshi-kotlin:1.5.0'
+
+    api 'com.yydcdut.sdlv:sdlv:0.7.1'
 }

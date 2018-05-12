@@ -7,4 +7,5 @@
     <string name="title_activity_profile">Profile</string>
     <string name="title_activity_import_data">Import Data</string>
     <string name="title_activity_ranking">Ranking</string>
+    <string name="title_profile_edit_item">Edit Item</string>
 </resources>
