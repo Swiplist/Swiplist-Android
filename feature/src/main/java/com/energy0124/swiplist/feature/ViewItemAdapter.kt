@@ -32,6 +32,7 @@ class ViewItemAdapter(context: Context, data: List<Item>) : BaseAdapter(){
 
     override fun getView(position: Int, convertView: View?, parent: ViewGroup?): View {
         var view: View? = convertView
+        val item = itemList[position]
         if (view == null) {
             view = inflater.inflate(R.layout.view_item_row, null)
         }
@@ -40,18 +41,18 @@ class ViewItemAdapter(context: Context, data: List<Item>) : BaseAdapter(){
         itemRankingTextView.text = (position + 1).toString()
 
         val itemImageView: ImageView = view!!.findViewById(R.id.view_item_image)
-        if (itemList[position].imageUrl != null) {
-            Picasso.with(mContext).load(itemList[position].imageUrl)
+        if (item.imageUrl != null) {
+            Picasso.with(mContext).load(item.imageUrl)
                     .fit()
                     .centerCrop()
                     .into(itemImageView)
         }
 
         val itemNameTextView: TextView = view!!.findViewById(R.id.view_item_name)
-        itemNameTextView.text = itemList[position].name
+        itemNameTextView.text = item.name
 
         val itemCategoryTextView: TextView = view!!.findViewById(R.id.view_item_category)
-        itemCategoryTextView.text = itemList[position].category
+        itemCategoryTextView.text = item.category
 
         view.setOnClickListener {
             Toast.makeText(mContext, itemList[position].name, Toast.LENGTH_SHORT).show()

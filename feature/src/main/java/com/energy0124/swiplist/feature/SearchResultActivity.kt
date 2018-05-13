@@ -52,9 +52,7 @@ class SearchResultActivity : AppCompatActivity() {
                                             val responseBody = String(response.data)
                                             val itemArray = JSONArray(responseBody)
                                             Log.d("arraySize", itemArray.length().toString())
-                                            // TODO: if array size > 0, display the list, else display "no result"
                                             if (itemArray.length() > 0) {       // has result
-                                                // TODO: feed data to adapter
                                                 val moshi = Moshi.Builder().add(KotlinJsonAdapterFactory()).build()
                                                 val type = Types.newParameterizedType(List::class.java, Item::class.java)
                                                 val itemListAdapter: JsonAdapter<List<Item>> = moshi.adapter(type)
@@ -67,11 +65,11 @@ class SearchResultActivity : AppCompatActivity() {
                                             }
 
                                         } else {
-                                            Log.d("searchResErr", response.responseMessage)
+                                            Log.e("searchResErr", response.responseMessage)
                                         }
                                     }
                                     is Result.Failure -> {
-                                        Log.d("searchErr", result.error.toString())
+                                        Log.e("searchErr", result.error.toString())
                                     }
                                 }
                             }
@@ -89,9 +87,7 @@ class SearchResultActivity : AppCompatActivity() {
                                         val responseBody = String(response.data)
                                         val userArray = JSONArray(responseBody)
                                         Log.d("arraySize", userArray.length().toString())
-                                        // TODO: if array size > 0, display the list, else display "no result"
                                         if (userArray.length() > 0) {       // has result
-                                            // TODO: feed data to adapter
                                             val moshi = Moshi.Builder().add(KotlinJsonAdapterFactory()).build()
                                             val type = Types.newParameterizedType(List::class.java, User::class.java)
                                             val userListAdapter: JsonAdapter<List<User>> = moshi.adapter(type)
