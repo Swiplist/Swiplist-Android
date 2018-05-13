@@ -1,5 +1,6 @@
 package com.energy0124.swiplist.feature
 
+import android.content.Intent
 import android.os.Bundle
 import android.support.design.widget.Snackbar
 import android.support.design.widget.TabLayout
@@ -8,9 +9,13 @@ import android.support.v4.app.FragmentManager
 import android.support.v4.app.FragmentPagerAdapter
 import android.support.v4.view.ViewPager
 import android.support.v7.app.AppCompatActivity
+import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
+import android.widget.RadioButton
+import android.widget.Toast
 import kotlinx.android.synthetic.main.activity_profile.*
+import kotlinx.android.synthetic.main.fragment_profile_view_item.*
 
 class ProfileActivity : AppCompatActivity() {
 
@@ -59,6 +64,48 @@ class ProfileActivity : AppCompatActivity() {
                 onBackPressed()
                 return true
             }
+            R.id.profile_action_edit -> {
+                //Toast.makeText(applicationContext, "Edit", Toast.LENGTH_SHORT).show()
+                val currentPosition = container.currentItem
+                when(currentPosition){
+                    0 -> {
+                        // Edit Profile
+                    }
+                    1 -> {
+                        // Edit Item List
+                        var rbGame: RadioButton? = null
+                        var rbAnime: RadioButton? = null
+                        var rbManga: RadioButton? = null
+                        val frags = this.supportFragmentManager.fragments
+                        for(f in frags){
+                            if("com.energy0124.swiplist.feature.ProfileViewItemFragment" == f.javaClass.name){
+                                rbGame = f.view!!.findViewById<RadioButton>(R.id.game_filter_button)
+                                rbAnime = f.view!!.findViewById<RadioButton>(R.id.anime_filter_button)
+                                rbManga = f.view!!.findViewById<RadioButton>(R.id.manga_filter_button)
+                            }
+                        }
+                        val intent = Intent(this, ProfileEditItemActivity::class.java)
+                        //Log.d("radio button", "game")
+                        //Log.d("radio button", "anime")
+                        //Log.d("radio button", "manga")
+                        when {
+                            rbGame!!.isChecked -> intent.putExtra("category", "game")
+                            rbAnime!!.isChecked -> intent.putExtra("category", "anime")
+                            rbManga!!.isChecked -> intent.putExtra("category", "manga")
+                        }
+                        startActivity(intent)
+                    }
+                    2 -> {
+                        // Edit Friend List
+                        val intent = Intent(this, ProfileEditFriendActivity::class.java)
+                        startActivity(intent)
+                    }
+                    else -> {
+
+                    }
+                }
+                return true
+            }
             else -> return super.onOptionsItemSelected(item)
         }
     }
@@ -89,8 +136,8 @@ class ProfileActivity : AppCompatActivity() {
         override fun getItem(position: Int): Fragment {
             return when (position) {
                 0 -> ProfileFragment()
-                1 -> ProfileViewItemFragment() // temp, need to make another fragment
-                2 -> ProfileViewFriendFragment()   // temp, need to make another fragment
+                1 -> ProfileViewItemFragment()
+                2 -> ProfileViewFriendFragment()
                 else -> ProfileFragment()
             }
             // getItem is called to instantiate the fragment for the given page.

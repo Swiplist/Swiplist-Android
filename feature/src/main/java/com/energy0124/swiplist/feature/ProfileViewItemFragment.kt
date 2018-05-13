@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ListView
+import android.widget.RadioButton
 import android.widget.RadioGroup
 import com.energy0124.swiplist.feature.model.Item
 
@@ -16,6 +17,10 @@ class ProfileViewItemFragment : ListFragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view = inflater.inflate(R.layout.fragment_profile_view_item, container, false)
         list = view.findViewById(android.R.id.list)
+
+        view.findViewById<RadioButton>(R.id.game_filter_button).isChecked = true
+        val presetAdapter = ViewItemAdapter(context!!, listOf(Item(name="game1"), Item(name="game2"), Item(name="game3"), Item(name="game4")))
+        list?.adapter = presetAdapter
 
         val radioGroup = view.findViewById<RadioGroup>(R.id.filter_button_group)
         radioGroup.setOnCheckedChangeListener { radioGroup, i ->

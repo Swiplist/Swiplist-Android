@@ -3,7 +3,6 @@ package com.energy0124.swiplist.feature
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.util.DisplayMetrics
-import android.util.Log
 import android.view.MenuItem
 import com.energy0124.swiplist.feature.model.Item
 import com.squareup.picasso.Picasso
@@ -33,8 +32,7 @@ class ViewItemActivity : AppCompatActivity() {
     private fun fillItemInfo() {
         val item: Item? = intent.getSerializableExtra("item") as Item
         if (item != null) {
-            Log.d("imageUrl", item.imageUrl)
-            if (item.imageUrl != "") {
+            if (item.imageUrl != null) {
                 val metrics = DisplayMetrics()
                 windowManager.defaultDisplay.getMetrics(metrics)
                 Picasso.with(this).load(item.imageUrl)
