@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ListView
+import com.energy0124.swiplist.feature.model.User
 
 
 class ProfileViewFriendFragment : ListFragment() {
@@ -19,7 +20,7 @@ class ProfileViewFriendFragment : ListFragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        val adapter = ViewUserAdapter(context!!, arrayListOf("test1", "test2", "test3", "test4", "test5"))
+        val adapter = ViewUserAdapter(context!!, listOf(User(username="user1"), User(username="user2")))
         listAdapter = adapter
     }
 }

@@ -1,6 +1,7 @@
 package com.energy0124.swiplist.feature.model
 
 import com.squareup.moshi.Json
+import java.io.Serializable
 
 //class User {
 //    @Json(name = "_id") lateinit var id: String
@@ -28,4 +29,4 @@ data class User(
         val manga: List<Item> = listOf<Item>(),
         val iconUrl: String? = null,
         val mobileNumber: String? = null
-)
+) : Serializable

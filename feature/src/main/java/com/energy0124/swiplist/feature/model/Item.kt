@@ -1,6 +1,7 @@
 package com.energy0124.swiplist.feature.model
 
 import com.squareup.moshi.Json
+import java.io.Serializable
 
 //class Item {
 //    @Json(name = "_id") lateinit var id: String
@@ -24,4 +25,4 @@ data class Item(
         val src: String? = null,
         val createdBy: String? = null
 //        val metadata: JSONObject? = null
-)
+): Serializable

@@ -30,71 +30,106 @@ dependencies {
     feature project(':feature')
 
     //use Fuel as rest client
+
     //https://github.com/kittinunf/Fuel
     api 'com.github.kittinunf.fuel:fuel:1.13.0'
+
     //for JVM
     api 'com.github.kittinunf.fuel:fuel-android:1.13.0'
+
     //for Android
     api 'com.github.kittinunf.fuel:fuel-livedata:1.13.0'
+
     //for LiveData support
     api 'com.github.kittinunf.fuel:fuel-rxjava:1.13.0'
+
     //for RxJava support
     api 'com.github.kittinunf.fuel:fuel-coroutines:1.13.0'
+
     //for Kotlin Coroutines support
     api 'com.github.kittinunf.fuel:fuel-gson:1.13.0'
+
     //for Gson support
     api 'com.github.kittinunf.fuel:fuel-jackson:1.13.0'
+
     //for Jackson support
     api 'com.github.kittinunf.fuel:fuel-moshi:1.13.0'
+
     //for Moshi support
     api 'com.github.kittinunf.fuel:fuel-forge:1.13.0'
+
     //for Forge support
     api 'com.github.kittinunf.result:result:1.4.0'
+
     //for jvm
-//    api 'com.github.kittinunf.result:result-coroutines:1.4.0' //for kotlin's coroutine support
 
-//    // ViewModel and LiveData
-//    implementation "android.arch.lifecycle:extensions:1.1.1"
-//    // alternatively, just ViewModel
-//    implementation "android.arch.lifecycle:viewmodel:1.1.1"
-//    // alternatively, just LiveData
-//    implementation "android.arch.lifecycle:livedata:1.1.1"
-//
-//    annotationProcessor "android.arch.lifecycle:compiler:1.1.1"
-//
-//    // Room (use 1.1.0-beta3 for latest beta)
-//    implementation "android.arch.persistence.room:runtime:1.0.0"
-//    annotationProcessor "android.arch.persistence.room:compiler:1.0.0"
-//
-//    // Paging
-//    implementation "android.arch.paging:runtime:1.0.0-rc1"
-//
-//    // Test helpers for LiveData
-//    testImplementation "android.arch.core:core-testing:1.1.1"
-//
-//    // Test helpers for Room
-//    testImplementation "android.arch.persistence.room:testing:1.0.0"
-//
-//    // RxJava support for Room (use 1.1.0-beta3 for latest beta)
-//    implementation "android.arch.persistence.room:rxjava2:1.0.0"
-//
-//    // ReactiveStreams support for LiveData
-//    implementation "android.arch.lifecycle:reactivestreams:1.1.1"
-//
-//    // RxJava support for Paging
-//    implementation "android.arch.paging:rxjava2:1.0.0-alpha1"
+    //    api 'com.github.kittinunf.result:result-coroutines:1.4.0' //for kotlin's coroutine support
 
-    api "io.reactivex.rxjava2:rxjava:2.1.13"
+    //    // ViewModel and LiveData
 
+    //    implementation "android.arch.lifecycle:extensions:1.1.1"
+
+    //    // alternatively, just ViewModel
+
+    //    implementation "android.arch.lifecycle:viewmodel:1.1.1"
+
+    //    // alternatively, just LiveData
+
+    //    implementation "android.arch.lifecycle:livedata:1.1.1"
+
+    //
+
+    //    annotationProcessor "android.arch.lifecycle:compiler:1.1.1"
+
+    //
+
+    //    // Room (use 1.1.0-beta3 for latest beta)
+
+    //    implementation "android.arch.persistence.room:runtime:1.0.0"
+
+    //    annotationProcessor "android.arch.persistence.room:compiler:1.0.0"
+
+    //
+
+    //    // Paging
+
+    //    implementation "android.arch.paging:runtime:1.0.0-rc1"
+
+    //
+
+    //    // Test helpers for LiveData
+
+    //    testImplementation "android.arch.core:core-testing:1.1.1"
+
+    //
+
+    //    // Test helpers for Room
+
+    //    testImplementation "android.arch.persistence.room:testing:1.0.0"
+
+    //
+
+    //    // RxJava support for Room (use 1.1.0-beta3 for latest beta)
+
+    //    implementation "android.arch.persistence.room:rxjava2:1.0.0"
+
+    //
+
+    //    // ReactiveStreams support for LiveData
+
+    //    implementation "android.arch.lifecycle:reactivestreams:1.1.1"
+
+    //
+
+    //    // RxJava support for Paging
+
+    //    implementation "android.arch.paging:rxjava2:1.0.0-alpha1"
+    api 'io.reactivex.rxjava2:rxjava:2.1.13'
     api 'org.jetbrains.kotlinx:kotlinx-coroutines-core:0.22.5'
-
     api 'com.google.code.gson:gson:2.8.3'
-
-    api "com.fasterxml.jackson.module:jackson-module-kotlin:2.9.4.1"
-
+    api 'com.fasterxml.jackson.module:jackson-module-kotlin:2.9.4.1'
     api 'com.github.kittinunf.forge:forge:0.3.0'
-
     api 'com.squareup.moshi:moshi:1.5.0'
-
     api 'com.squareup.moshi:moshi-kotlin:1.5.0'
+    api 'com.squareup.picasso:picasso:2.5.2'
 }

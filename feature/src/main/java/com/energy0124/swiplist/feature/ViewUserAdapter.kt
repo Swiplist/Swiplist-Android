@@ -8,8 +8,9 @@ import android.view.ViewGroup
 import android.widget.BaseAdapter
 import android.widget.TextView
 import android.widget.Toast
+import com.energy0124.swiplist.feature.model.User
 
-class ViewUserAdapter(context: Context, data: ArrayList<String>) : BaseAdapter() {
+class ViewUserAdapter(context: Context, data: List<User>) : BaseAdapter() {
         private val mContext = context
         private val friendList = data
         private val inflater = LayoutInflater.from(mContext)
@@ -33,13 +34,13 @@ class ViewUserAdapter(context: Context, data: ArrayList<String>) : BaseAdapter()
             }
 
             val friendNameTextView: TextView = view!!.findViewById(R.id.view_friend_name)
-            friendNameTextView.text = friendList[position]
+            friendNameTextView.text = friendList[position].username
 
             view.setOnClickListener {
-                Toast.makeText(mContext, friendList[position], Toast.LENGTH_SHORT).show()
+                Toast.makeText(mContext, friendList[position].username, Toast.LENGTH_SHORT).show()
                 val intent = Intent(mContext, ViewFriendActivity::class.java)
                 // FIXME: send intent with friend's userID that can identify the user
-                intent.putExtra("userId", friendList[position])
+                intent.putExtra("userId", friendList[position].username)
                 mContext.startActivity(intent)
             }
             return view

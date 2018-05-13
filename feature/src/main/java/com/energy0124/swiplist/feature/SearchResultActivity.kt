@@ -8,9 +8,15 @@ import android.view.MenuItem
 import android.view.View
 import android.widget.ListView
 import android.widget.Toast
+import com.energy0124.swiplist.feature.model.Item
+import com.energy0124.swiplist.feature.model.User
 import com.github.kittinunf.fuel.Fuel
 import com.github.kittinunf.fuel.core.FuelManager
 import com.github.kittinunf.result.Result
+import com.squareup.moshi.JsonAdapter
+import com.squareup.moshi.KotlinJsonAdapterFactory
+import com.squareup.moshi.Moshi
+import com.squareup.moshi.Types
 import kotlinx.android.synthetic.main.activity_search_result.*
 import org.json.JSONArray
 
@@ -49,7 +55,11 @@ class SearchResultActivity : AppCompatActivity() {
                                             // TODO: if array size > 0, display the list, else display "no result"
                                             if (itemArray.length() > 0) {       // has result
                                                 // TODO: feed data to adapter
-                                                val adapter = ViewItemAdapter(this, arrayListOf("test1", "test2"))
+                                                val moshi = Moshi.Builder().add(KotlinJsonAdapterFactory()).build()
+                                                val type = Types.newParameterizedType(List::class.java, Item::class.java)
+                                                val itemListAdapter: JsonAdapter<List<Item>> = moshi.adapter(type)
+                                                val itemList = itemListAdapter.fromJson(responseBody)
+                                                val adapter = ViewItemAdapter(this, itemList!!)
                                                 list?.adapter = adapter
                                             } else {                            // has no result
                                                 search_no_result_text.visibility = View.VISIBLE
@@ -82,7 +92,11 @@ class SearchResultActivity : AppCompatActivity() {
                                         // TODO: if array size > 0, display the list, else display "no result"
                                         if (userArray.length() > 0) {       // has result
                                             // TODO: feed data to adapter
-                                            val adapter = ViewUserAdapter(this, arrayListOf("test1", "test2"))
+                                            val moshi = Moshi.Builder().add(KotlinJsonAdapterFactory()).build()
+                                            val type = Types.newParameterizedType(List::class.java, User::class.java)
+                                            val userListAdapter: JsonAdapter<List<User>> = moshi.adapter(type)
+                                            val userList = userListAdapter.fromJson(responseBody)
+                                            val adapter = ViewUserAdapter(this, userList!!)
                                             list?.adapter = adapter
                                         } else {                            // has no result
                                             search_no_result_text.visibility = View.VISIBLE

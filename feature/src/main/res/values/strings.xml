@@ -50,15 +50,24 @@
     <!-- String related to profile -->
     <string name="section_format">Hello World from section: %1$d</string>
 
+    <string name="information_not_available">Not Available</string>
+
     <!-- String related to view friend -->
     <string name="view_friend_username_tag">Username:</string>
     <string name="view_friend_gender_tag">Gender:</string>
     <string name="view_friend_detail_not_available">Not Available</string>
 
-    <!-- String related to view item -->
+    <!-- String related to view item list -->
     <string name="view_item_game_button">Game</string>
     <string name="view_item_anime_button">Anime</string>
     <string name="view_item_manga_button">Manga</string>
+
+    <!-- String related to view item -->
+    <string name="view_item_detail_name_tag">Name:</string>
+    <string name="view_item_detail_category_tag">Category:</string>
+    <string name="view_item_detail_description_tag">Description:</string>
+    <string name="view_item_detail_source_tag">Source:</string>
+    <string name="view_item_detail_not_available">Not Available</string>
 
     <!-- Strings related to navigation menu -->
     <string name="nav_home">Home</string>

@@ -8,6 +8,7 @@ import android.view.View
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.ListView
+import com.energy0124.swiplist.feature.model.Item
 import kotlinx.android.synthetic.main.activity_ranking.*
 
 class RankingActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener {
@@ -45,17 +46,17 @@ class RankingActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener 
         when (position) {
             0 -> {
                 Log.d("item", "game")
-                val adapter = ViewItemAdapter(this, arrayListOf("game1", "game2", "game3", "game4"))
+                val adapter = ViewItemAdapter(this, listOf(Item(name="game1"), Item(name="game2"), Item(name="game3"), Item(name="game4")))
                 list?.adapter = adapter
             }
             1 -> {
                 Log.d("item", "anime")
-                val adapter = ViewItemAdapter(this, arrayListOf("anime1", "anime2", "anime3", "anime4"))
+                val adapter = ViewItemAdapter(this, listOf(Item(name="anime1"), Item(name="anime2"), Item(name="anime3"), Item(name="anime4")))
                 list?.adapter = adapter
             }
             2 -> {
                 Log.d("item", "manga")
-                val adapter = ViewItemAdapter(this, arrayListOf("manga1", "manga2", "manga3", "manga4"))
+                val adapter = ViewItemAdapter(this, listOf(Item(name="manga1"), Item(name="manga2"), Item(name="manga3"), Item(name="manga4")))
                 list?.adapter = adapter
             }
         }
