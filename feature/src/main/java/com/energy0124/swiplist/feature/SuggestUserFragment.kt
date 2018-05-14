@@ -14,6 +14,7 @@ import android.widget.ImageButton
 import android.widget.TextView
 import android.widget.Toast
 import com.energy0124.swiplist.feature.model.MinifiedUser
+import com.energy0124.swiplist.feature.model.User
 import com.github.kittinunf.fuel.Fuel
 import com.github.kittinunf.fuel.core.FuelManager
 import com.github.kittinunf.result.Result
@@ -63,6 +64,12 @@ class SuggestUserFragment : Fragment() {
                             when (result) {
                                 is Result.Success -> {
                                     if (response.statusCode == 200) {
+                                        val responseBody = String(response.data)
+                                        val moshi = Moshi.Builder().add(KotlinJsonAdapterFactory()).build()
+                                        val userAdapter = moshi.adapter(User::class.java)
+                                        val friendToAdd = userAdapter.fromJson(responseBody)
+                                        val currentUser = (this.activity!!.application as SwiplistApplication).user
+                                        currentUser!!.friends.add(friendToAdd!!)
                                         Toast.makeText(context, "Added", Toast.LENGTH_SHORT).show()
                                         userList.removeAt(0)
                                         if (userList.isEmpty()) {

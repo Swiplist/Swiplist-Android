@@ -4,7 +4,7 @@ import com.squareup.moshi.Json
 import java.io.Serializable
 
 data class MinifiedUser(
-        @Json(name = "_id") val id: String = "",
-        val username: String = "",
-        val iconUrl: String? = null
+        @Json(name = "_id") var id: String = "",
+        var username: String = "",
+        var iconUrl: String? = null
 ) : Serializable
