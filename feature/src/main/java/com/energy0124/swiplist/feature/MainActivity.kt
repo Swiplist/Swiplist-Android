@@ -14,30 +14,21 @@ import android.view.MenuItem
 import android.widget.ImageButton
 import android.widget.TextView
 import android.widget.Toast
-import com.energy0124.swiplist.feature.model.User
-import com.github.kittinunf.fuel.Fuel
-import com.github.kittinunf.fuel.core.FuelManager
-import com.github.kittinunf.result.Result
-import com.squareup.moshi.KotlinJsonAdapterFactory
-import com.squareup.moshi.Moshi
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.app_bar_main.*
 import kotlinx.android.synthetic.main.content_main.*
-import org.json.JSONArray
-import org.json.JSONObject
 
 class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
 
     //    private lateinit var mSectionsPageAdapter: SectionsPageAdapter
     private lateinit var mViewPager: ViewPager
-    private var userMap = mapOf<String, Any?>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         setSupportActionBar(toolbar)
 
-        userSetUp()
+        navSetup()
 
         val tabLayout = main_tabs
         mViewPager = main_viewpager
@@ -68,81 +59,17 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         viewPager.adapter = adapter
     }
 
-    private fun userSetUp() {
-        val sharePref = this.getSharedPreferences(getString(R.string.preference_file_key), Context.MODE_PRIVATE)
-        val token = sharePref.getString(getString(R.string.authorization_key), "null")
-        //Log.d("token", token)
-        FuelManager.instance.baseHeaders = mapOf("Authorization" to "Bearer $token")
-        Fuel.get(getString(R.string.server_base_url) + "/api/users/me").response { request, response, result ->
-            //make request to https://httpbin.org/get because Fuel.{get|post|put|delete} use FuelManager.instance to make HTTP request
-            //Log.d("response", response.toString())
-            //Log.d("result", result.toString())
-            when (result) {
-                is Result.Success -> {
-                    if (response.statusCode == 200) {     // HTTP OK
-                        val responseBody = String(response.data)
-                        /*val username: String = JSONObject(responseBody).getString("username")
-                        val email: String = JSONObject(responseBody).getString("email")
-                        val items: JSONArray? = JSONObject(responseBody).optJSONArray("items")
-                        val friends: JSONArray? = JSONObject(responseBody).optJSONArray("friends")
-                        val games: JSONArray? = JSONObject(responseBody).optJSONArray("games")
-                        val anime: JSONArray? = JSONObject(responseBody).optJSONArray("anime")
-                        val manga: JSONArray? = JSONObject(responseBody).optJSONArray("manga")
-                        val iconUrl: String? = JSONObject(responseBody).optString("iconUrl")
-                        val description: String? = JSONObject(responseBody).optString("description")
-                        val mobileNumber: String? = JSONObject(responseBody).optString("mobileNumber")
-                        /*userMap = mapOf("username" to username,
-                                "email" to email,
-                                "items" to items,
-                                "friends" to friends,
-                                "iconUrl" to iconUrl)
-                        Log.d("map", userMap.toString())*/
-                        val userInfoJson = JSONObject()
-                        userInfoJson.put("username", username)
-                        userInfoJson.put("email", email)
-                        userInfoJson.put("items", items)
-                        userInfoJson.put("friends", friends)
-                        userInfoJson.put("games", games)
-                        userInfoJson.put("anime", anime)
-                        userInfoJson.put("manga", manga)
-                        userInfoJson.put("iconUrl", iconUrl)
-                        userInfoJson.put("description", description)
-                        userInfoJson.put("mobileNumber", mobileNumber)*/
-                        //Log.d("jsonObj", userInfoJson.toString())
-                        val moshi = Moshi.Builder().add(KotlinJsonAdapterFactory()).build()
-                        val jsonAdapter = moshi.adapter(User::class.java)
-                        val user = jsonAdapter.fromJson(responseBody)
-                        val userJson = jsonAdapter.toJson(user)
-
-                        with(sharePref.edit()) {
-//                            putString(getString(R.string.user_info_key), userInfoJson.toString())
-                            putString(getString(R.string.user_info_key), userJson)
-                            commit()
-                        }
-
-                        // set the user info in the navigation bar
-                        val navHeader = nav_view.getHeaderView(0)
-                        val navHeaderUserTextView = navHeader.findViewById<TextView>(R.id.nav_username)
-                        navHeaderUserTextView.text = user!!.username
-                        //Log.d("text", navHeaderUserTextView.text.toString())
-                        val navHeaderProfileButton = navHeader.findViewById<ImageButton>(R.id.nav_profile_picture)
-                        if ("" != user.iconUrl) {
-                            //  navHeaderProfileButton.setImageResource(R.drawable.ic_exit_to_app_black_18dp)
-                        } else {
-                            navHeaderProfileButton.setImageResource(R.drawable.ic_account_box_black_48dp)
-                        }
-
-                        // val user = sharePref.getString(getString(R.string.user_info_key), "null")
-                        // Log.d("user", user)
-                    }
-                }
-                is Result.Failure -> {
-                    val ex = result.getException()
-                    Log.d("re-exception", ex.toString())
-                    Toast.makeText(applicationContext, ex.toString(),
-                            Toast.LENGTH_LONG).show()
-                }
-            }
+    private fun navSetup() {
+        // set the user info in the navigation bar
+        val navHeader = nav_view.getHeaderView(0)
+        val navHeaderUserTextView = navHeader.findViewById<TextView>(R.id.nav_username)
+        navHeaderUserTextView.text = (application as SwiplistApplication).user!!.username
+        //Log.d("text", navHeaderUserTextView.text.toString())
+        val navHeaderProfileButton = navHeader.findViewById<ImageButton>(R.id.nav_profile_picture)
+        if ("" != (application as SwiplistApplication).user!!.iconUrl) {
+            //  navHeaderProfileButton.setImageResource(R.drawable.ic_exit_to_app_black_18dp)
+        } else {
+            navHeaderProfileButton.setImageResource(R.drawable.ic_account_box_black_48dp)
         }
     }
 
@@ -201,6 +128,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             R.id.nav_logout -> {
                 val sharePref = this.getSharedPreferences(getString(R.string.preference_file_key), Context.MODE_PRIVATE)
                 sharePref.edit().clear().commit()
+                (application as SwiplistApplication).user = null
                 val intent = Intent(this, LoginActivity::class.java)
                 startActivity(intent)
                 finish()
