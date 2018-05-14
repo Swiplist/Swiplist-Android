@@ -24,9 +24,9 @@ data class User(
         var description: String = "",
         var friends: List<User> = listOf<User>(),
         val items: List<String> = listOf<String>(),
-        var games: List<Item> = listOf<Item>(),
-        var anime: List<Item> = listOf<Item>(),
-        var manga: List<Item> = listOf<Item>(),
+        var games: MutableList<Item> = mutableListOf<Item>(),
+        var anime: MutableList<Item> = mutableListOf<Item>(),
+        var manga: MutableList<Item> = mutableListOf<Item>(),
         val iconUrl: String? = null,
         val mobileNumber: String? = null
 ) : Serializable
