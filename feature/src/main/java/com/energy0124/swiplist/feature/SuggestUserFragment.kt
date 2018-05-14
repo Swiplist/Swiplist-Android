@@ -13,7 +13,7 @@ import android.view.ViewGroup
 import android.widget.ImageButton
 import android.widget.TextView
 import android.widget.Toast
-import com.energy0124.swiplist.feature.model.User
+import com.energy0124.swiplist.feature.model.MinifiedUser
 import com.github.kittinunf.fuel.Fuel
 import com.github.kittinunf.fuel.core.FuelManager
 import com.github.kittinunf.result.Result
@@ -24,7 +24,7 @@ import com.squareup.moshi.Types
 import com.squareup.picasso.Picasso
 
 class SuggestUserFragment : Fragment() {
-    private val userList: MutableList<User> = mutableListOf()
+    private val userList: MutableList<MinifiedUser> = mutableListOf()
     private var card: CardView? = null
     private var nameText: TextView? = null
     private var imageButton: ImageButton? = null
@@ -47,24 +47,23 @@ class SuggestUserFragment : Fragment() {
         imageButton!!.setOnClickListener {
             Log.d("imageBtn", "Clicked")
             if (userList.isNotEmpty()) {
-                val intent = Intent(context, ViewItemActivity::class.java)
+                val intent = Intent(context, ProfileActivity::class.java)
                 intent.putExtra("userId", userList[0].id)
                 startActivity(intent)
             }
         }
         fabLeft!!.setOnClickListener {
-            Log.d("fab", "Interested")
+            Log.d("fab", "Added")
             if (userList.isNotEmpty()) {
                 val user = userList[0]
-                // FIXME: request path and body need change
-                Fuel.post(getString(R.string.server_base_url) + "/api/users/like")
-                        .body("{}")
+                Fuel.post(getString(R.string.server_base_url) + "/api/users/add/friend")
+                        .body("{ \"friend\": \"${user.id}\" }")
                         .header("Content-Type" to "application/json")
                         .response { request, response, result ->
                             when (result) {
                                 is Result.Success -> {
                                     if (response.statusCode == 200) {
-                                        Toast.makeText(context, "Liked", Toast.LENGTH_SHORT).show()
+                                        Toast.makeText(context, "Added", Toast.LENGTH_SHORT).show()
                                         userList.removeAt(0)
                                         if (userList.isEmpty()) {
                                             fetchSuggestion()
@@ -83,18 +82,17 @@ class SuggestUserFragment : Fragment() {
             }
         }
         fabRight!!.setOnClickListener {
-            Log.d("fab", "Not Interested")
+            Log.d("fab", "Ignored")
             if (userList.isNotEmpty()) {
                 val user = userList[0]
-                // FIXME: request path and body need change
-                Fuel.post(getString(R.string.server_base_url) + "/api/users/like")
-                        .body("{}")
+                Fuel.post(getString(R.string.server_base_url) + "/api/users/suggest/friends/ignore")
+                        .body("{ \"friend\": \"${user.id}\" }")
                         .header("Content-Type" to "application/json")
                         .response { request, response, result ->
                             when (result) {
                                 is Result.Success -> {
                                     if (response.statusCode == 200) {
-                                        Toast.makeText(context, "Disliked", Toast.LENGTH_SHORT).show()
+                                        Toast.makeText(context, "Ignored", Toast.LENGTH_SHORT).show()
                                         userList.removeAt(0)
                                         if (userList.isEmpty()) {
                                             fetchSuggestion()
@@ -118,18 +116,15 @@ class SuggestUserFragment : Fragment() {
     }
 
     private fun fetchSuggestion(renderToCard: Boolean = true) {
-        // FIXME: request path and body need change
-        Fuel.post(getString(R.string.server_base_url) + "/api/users/recommend")
-                .body("{}")
-                .header("Content-Type" to "application/json")
+        Fuel.get(getString(R.string.server_base_url) + "/api/users/suggest/friends")
                 .response { request, response, result ->
                     when (result) {
                         is Result.Success -> {
                             if (response.statusCode == 200) {
                                 val responseBody = String(response.data)
                                 val moshi = Moshi.Builder().add(KotlinJsonAdapterFactory()).build()
-                                val type = Types.newParameterizedType(List::class.java, User::class.java)
-                                val userListAdapter: JsonAdapter<List<User>> = moshi.adapter(type)
+                                val type = Types.newParameterizedType(List::class.java, MinifiedUser::class.java)
+                                val userListAdapter: JsonAdapter<List<MinifiedUser>> = moshi.adapter(type)
                                 userList.clear()
                                 userList.addAll(userListAdapter.fromJson(responseBody)!!)
                                 if (renderToCard) {
