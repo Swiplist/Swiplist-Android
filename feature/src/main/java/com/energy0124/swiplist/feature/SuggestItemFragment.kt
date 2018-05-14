@@ -187,6 +187,10 @@ class SuggestItemFragment : Fragment() {
                                     }
                                 } else {
                                     Log.d("item", "no item")
+                                    list.clear()
+                                    if (renderToCard) {
+                                        fillCardInfo(list)
+                                    }
                                 }
                             } else {
                                 Log.e("searchResErr", response.responseMessage)

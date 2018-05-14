@@ -29,7 +29,7 @@
                 android:layout_height="300dp"
                 android:layout_centerHorizontal="true"
                 android:background="@android:color/background_light"
-                app:srcCompat="@drawable/ic_menu_gallery" />
+                app:srcCompat="@drawable/ic_account_box_black_48dp" />
 
             <TextView
                 android:id="@+id/suggest_user_name"
