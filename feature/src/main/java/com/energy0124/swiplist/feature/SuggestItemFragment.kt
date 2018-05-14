@@ -111,6 +111,12 @@ class SuggestItemFragment : Fragment() {
                                 is Result.Success -> {
                                     if (response.statusCode == 200) {
                                         Toast.makeText(context, "Liked", Toast.LENGTH_SHORT).show()
+                                        val currentUser = (this.activity!!.application as SwiplistApplication).user
+                                        when (currentCategory) {
+                                            "game" -> currentUser!!.games.add(list.first())
+                                            "anime" -> currentUser!!.anime.add(list.first())
+                                            "manga" -> currentUser!!.manga.add(list.first())
+                                        }
                                         list.removeAt(0)
                                         if (list.isEmpty()) {
                                             fetchSuggestion(currentCategory)
@@ -221,7 +227,7 @@ class SuggestItemFragment : Fragment() {
 
     private fun getList(category: String): MutableList<Item> {
         when (category) {
-            "game" ->  return gameList
+            "game" -> return gameList
             "anime" -> return animeList
             "manga" -> return mangaList
             else -> return gameList
