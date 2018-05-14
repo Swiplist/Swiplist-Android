@@ -60,7 +60,7 @@ class RankingActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener 
         when (position) {
             0 -> {
                 Log.d("item", "game")
-                category = "game"
+                category = "games"
                 // val adapter = ViewItemAdapter(this, listOf(Item(name="game1"), Item(name="game2"), Item(name="game3"), Item(name="game4")))
                 // list?.adapter = adapter
             }
