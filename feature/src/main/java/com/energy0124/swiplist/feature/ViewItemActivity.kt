@@ -32,7 +32,7 @@ class ViewItemActivity : AppCompatActivity() {
     private fun fillItemInfo() {
         val item: Item? = intent.getSerializableExtra("item") as Item
         if (item != null) {
-            if (item.imageUrl != null) {
+            if (item.imageUrl != null && item.imageUrl != "") {
                 val metrics = DisplayMetrics()
                 windowManager.defaultDisplay.getMetrics(metrics)
                 Picasso.with(this).load(item.imageUrl)
@@ -42,10 +42,10 @@ class ViewItemActivity : AppCompatActivity() {
             }
             item_detail_name_text.text = item.name
             item_detail_category_text.text = item.category
-            if (item.description != null) {
+            if (item.description != null && item.description != "") {
                 item_detail_description_text.text = item.description
             }
-            if (item.src != null) {
+            if (item.src != null && item.src != "") {
                 item_detail_source_text.text = item.src
             }
         }

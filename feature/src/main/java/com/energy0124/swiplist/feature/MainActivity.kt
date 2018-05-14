@@ -60,8 +60,8 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     private fun setupViewPager(viewPager: ViewPager) {
         val adapter = SectionsPageAdapter(supportFragmentManager)
         adapter.addFragment(OverviewFragment(), getString(R.string.tab_overview))
-        adapter.addFragment(ViewItemFragment(), getString(R.string.tab_view_items))
-        adapter.addFragment(ViewFriendFragment(), getString(R.string.tab_view_friends))
+        adapter.addFragment(SuggestItemFragment(), getString(R.string.tab_view_items))
+        adapter.addFragment(SuggestUserFragment(), getString(R.string.tab_view_friends))
         viewPager.adapter = adapter
     }
 

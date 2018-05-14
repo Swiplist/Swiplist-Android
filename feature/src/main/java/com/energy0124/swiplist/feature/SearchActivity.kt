@@ -7,6 +7,7 @@ import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
+import android.widget.CheckBox
 import android.widget.RadioGroup
 import android.widget.SearchView
 import android.widget.Toast
@@ -15,6 +16,7 @@ import kotlinx.android.synthetic.main.activity_search.*
 class SearchActivity : AppCompatActivity() {
 
     private lateinit var mSearchView: SearchView
+    private lateinit var checkBoxList: List<CheckBox>
     private var isSearchingItem = true
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -42,6 +44,13 @@ class SearchActivity : AppCompatActivity() {
                 }
             }
         }
+
+        checkBoxList = listOf(game_option_checkbox, anime_option_checkbox, manga_option_checkbox)
+        checkBoxList[0].isChecked = true
+        for (v in checkBoxList) {
+            v.setOnClickListener { checkBoxOnClick(it) }
+        }
+
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -64,28 +73,19 @@ class SearchActivity : AppCompatActivity() {
 
                 // TODO: add search function on the query string
                 if (isSearchingItem) {
-                    var hasCategory = false
                     fullQuery += "item:"
                     searchType = "item"
-                    if (game_option_checkbox.isChecked) {
+                    if (checkBoxList[0].isChecked) {
                         fullQuery += " game"
                         category.add("game")
-                        hasCategory = true
                     }
-                    if (anime_option_checkbox.isChecked) {
+                    if (checkBoxList[1].isChecked) {
                         fullQuery += " anime"
                         category.add("anime")
-                        hasCategory = true
                     }
-                    if (manga_option_checkbox.isChecked) {
+                    if (checkBoxList[2].isChecked) {
                         fullQuery += " manga"
                         category.add("manga")
-                        hasCategory = true
-                    }
-                    if (!hasCategory) {
-                        Toast.makeText(applicationContext, "Please choose at least one category",
-                                Toast.LENGTH_LONG).show()
-                        return false
                     }
                 } else {
                     fullQuery += "user:"
@@ -118,6 +118,21 @@ class SearchActivity : AppCompatActivity() {
             }
             else -> {
                 return super.onOptionsItemSelected(item)
+            }
+        }
+    }
+
+    private fun checkBoxOnClick(view: View) {
+        if (view is CheckBox) {
+            if (!view.isChecked) {
+                var count = 0
+                for (v in checkBoxList) {
+                    if (v.isChecked) count++
+                }
+                if (count < 1) {
+                    Toast.makeText(this, "Please choose at least one category", Toast.LENGTH_LONG).show()
+                    view.isChecked = true
+                }
             }
         }
     }

@@ -54,6 +54,10 @@
 
     <string name="information_not_available">Not Available</string>
 
+    <!-- String related to suggestion -->
+    <string name="suggestion_action_interested">interested</string>
+    <string name="suggestion_action_uninterested">uninterested</string>
+
     <!-- String related to view friend -->
     <string name="view_friend_username_tag">Username:</string>
     <string name="view_friend_gender_tag">Gender:</string>

@@ -10,4 +10,5 @@
     <color name="holo_gray_light">#33999999</color>
     <color name="holo_orange_light">#ffffbb33</color>
     <color name="holo_orange_dark">#ffff8800</color>
+    <color name="tiffany_blue">#ddeaff</color>
 </resources>
