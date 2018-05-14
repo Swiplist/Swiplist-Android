@@ -43,8 +43,9 @@ class SearchResultActivity : AppCompatActivity() {
                 val category = intent.getStringArrayListExtra("category")
                 Log.d("category", JSONArray(category).toString())
                 if (category != null) {
-                    Fuel.post(getString(R.string.server_base_url) + "/api/items/search",
-                            listOf("query" to query, "categories" to JSONArray(category)))
+                    Fuel.post(getString(R.string.server_base_url) + "/api/items/search")
+                            .body("{ \"query\": \"$query\", \"categories\": ${JSONArray(category)} }")
+                            .header("Content-Type" to "application/json")
                             .response { request, response, result ->
                                 when (result) {
                                     is Result.Success -> {
@@ -78,8 +79,9 @@ class SearchResultActivity : AppCompatActivity() {
             "user" -> {
                 supportActionBar?.title = String.format(getString(R.string.search_user_title), query)
 
-                Fuel.post(getString(R.string.server_base_url) + "/api/users/search",
-                        listOf("query" to query))
+                Fuel.post(getString(R.string.server_base_url) + "/api/users/search")
+                        .body("{ \"query\": \"$query\" }")
+                        .header("Content-Type" to "application/json")
                         .response { request, response, result ->
                             when (result) {
                                 is Result.Success -> {

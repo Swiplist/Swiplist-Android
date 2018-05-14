@@ -19,10 +19,10 @@ data class Item(
         @Json(name = "_id") val id: String = "",
         val name: String = "",
         val category: String = "",
-        val description: String? = null,
-        val imageUrl: String? = null,
-        val dataUrl: String? = null,
-        val src: String? = null,
+        var description: String = "",
+        var imageUrl: String? = null,
+        var dataUrl: String? = null,
+        var src: String? = null,
         val createdBy: String? = null
 //        val metadata: JSONObject? = null
 ): Serializable

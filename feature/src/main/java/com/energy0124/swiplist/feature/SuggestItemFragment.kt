@@ -10,10 +10,8 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageButton
-import android.widget.RadioButton
-import android.widget.RadioGroup
-import android.widget.TextView
+import android.widget.*
+import com.energy0124.swiplist.feature.R.drawable.ic_menu_gallery
 import com.energy0124.swiplist.feature.model.Item
 import com.github.kittinunf.fuel.Fuel
 import com.github.kittinunf.fuel.core.FuelManager
@@ -50,40 +48,37 @@ class SuggestItemFragment : Fragment() {
         val token = sharePref.getString(getString(R.string.authorization_key), "null")
         FuelManager.instance.baseHeaders = mapOf("Authorization" to "Bearer $token")
         fetchSuggestion("game")
-        fetchSuggestion("anime")
-        fetchSuggestion("manga")
-        fillCardInfo(gameList)
-        fillCardInfo(animeList)
-        fillCardInfo(mangaList)
+        fetchSuggestion("anime", false)
+        fetchSuggestion("manga", false)
 
         view.findViewById<RadioButton>(R.id.game_filter_button).isChecked = true
         currentCategory = "game"
 
         val radioGroup = view.findViewById<RadioGroup>(R.id.filter_button_group)
         radioGroup.setOnCheckedChangeListener { radioGroup, i ->
-            // TODO: when change filter, fetch suggest list from server, refresh card information
+            // when change filter, fetch suggest list from server, refresh card information
             when (i) {
                 R.id.game_filter_button -> {
-                    Log.d("button", "game")
                     currentCategory = "game"
-                    if (gameList.count() < 5) {
+                    if (gameList.isEmpty()) {
                         fetchSuggestion("game")
+                    } else {
                         fillCardInfo(gameList)
                     }
                 }
                 R.id.anime_filter_button -> {
-                    Log.d("button", "anime")
                     currentCategory = "anime"
-                    if (animeList.count() < 5) {
+                    if (animeList.isEmpty()) {
                         fetchSuggestion("anime")
+                    } else {
                         fillCardInfo(animeList)
                     }
                 }
                 R.id.manga_filter_button -> {
-                    Log.d("button", "manga")
                     currentCategory = "manga"
-                    if (mangaList.count() < 5) {
+                    if (mangaList.isEmpty()) {
                         fetchSuggestion("manga")
+                    } else {
                         fillCardInfo(mangaList)
                     }
                 }
@@ -92,14 +87,9 @@ class SuggestItemFragment : Fragment() {
         }
 
         imageButton!!.setOnClickListener {
-            // TODO: send intent to ViewItemActivity with item object as extra
+            // send intent to ViewItemActivity with item object as extra
             Log.d("imageBtn", "Clicked")
-            val list = when (currentCategory) {
-                "game" -> gameList
-                "anime" -> animeList
-                "manga" -> mangaList
-                else -> gameList
-            }
+            val list = getList(currentCategory)
             if (list.isNotEmpty()) {
                 val intent = Intent(context, ViewItemActivity::class.java)
                 intent.putExtra("item", list[0] as Serializable)
@@ -107,26 +97,79 @@ class SuggestItemFragment : Fragment() {
             }
         }
         fabLeft!!.setOnClickListener {
-            // TODO: refresh card information, send score to server
             Log.d("fab", "Interested")
+            val list = getList(currentCategory)
+            if (list.isNotEmpty()) {
+                val item = list[0]
+                Fuel.post(getString(R.string.server_base_url) + "/api/users/like")
+                        .body("{ \"categories\": [\"$currentCategory\"]," +
+                                "\"item\": \"${item.id}\"," +
+                                "\"like\": \"true\" }")
+                        .header("Content-Type" to "application/json")
+                        .response { request, response, result ->
+                            when (result) {
+                                is Result.Success -> {
+                                    if (response.statusCode == 200) {
+                                        Toast.makeText(context, "Liked", Toast.LENGTH_SHORT).show()
+                                        list.removeAt(0)
+                                        if (list.isEmpty()) {
+                                            fetchSuggestion(currentCategory)
+                                        } else {
+                                            fillCardInfo(list)
+                                        }
+                                    } else {
+                                        Log.e("likeError", response.responseMessage)
+                                    }
+                                }
+                                is Result.Failure -> {
+                                    Log.e("likeError", result.error.toString())
+                                }
+                            }
+                        }
+            }
+
         }
         fabRight!!.setOnClickListener {
-            // TODO: refresh card information, send score to server
             Log.d("fab", "Not Interested")
+            val list = getList(currentCategory)
+            if (list.isNotEmpty()) {
+                val item = list[0]
+                Fuel.post(getString(R.string.server_base_url) + "/api/users/like")
+                        .body("{ \"categories\": [\"$currentCategory\"]," +
+                                "\"item\": \"${item.id}\"," +
+                                "\"like\": \"false\" }")
+                        .header("Content-Type" to "application/json")
+                        .response { request, response, result ->
+                            when (result) {
+                                is Result.Success -> {
+                                    if (response.statusCode == 200) {
+                                        Toast.makeText(context, "Disliked", Toast.LENGTH_SHORT).show()
+                                        list.removeAt(0)
+                                        if (list.isEmpty()) {
+                                            fetchSuggestion(currentCategory)
+                                        } else {
+                                            fillCardInfo(list)
+                                        }
+                                    } else {
+                                        Log.e("dislikeError", response.responseMessage)
+                                    }
+                                }
+                                is Result.Failure -> {
+                                    Log.e("dislikeError", result.error.toString())
+                                }
+                            }
+                        }
+            }
         }
 
         return view
     }
 
-    private fun fetchSuggestion(category: String) {
-        val list = when (category) {
-            "game" -> gameList
-            "anime" -> animeList
-            "manga" -> mangaList
-            else -> gameList
-        }
-        Fuel.post(getString(R.string.server_base_url) + "/api/items/recommend",
-                listOf("categories" to JSONArray(arrayOf(category))))
+    private fun fetchSuggestion(category: String, renderToCard: Boolean = true) {
+        val list = getList(category)
+        Fuel.post(getString(R.string.server_base_url) + "/api/items/recommend")
+                .body("{ \"categories\": [\"$category\"] }")
+                .header("Content-Type" to "application/json")
                 .response { request, response, result ->
                     when (result) {
                         is Result.Success -> {
@@ -139,8 +182,11 @@ class SuggestItemFragment : Fragment() {
                                     val itemListAdapter: JsonAdapter<List<Item>> = moshi.adapter(type)
                                     list.clear()
                                     list.addAll(itemListAdapter.fromJson(responseBody)!!)
+                                    if (renderToCard) {
+                                        fillCardInfo(list)
+                                    }
                                 } else {
-
+                                    Log.d("item", "no item")
                                 }
                             } else {
                                 Log.e("searchResErr", response.responseMessage)
@@ -154,19 +200,27 @@ class SuggestItemFragment : Fragment() {
     }
 
     private fun fillCardInfo(list: MutableList<Item>) {
-        if (list.count() > 0) {
+        if (list.isNotEmpty()) {
             val item = list[0]
-            for (i in list) {
-                Log.d("name", i.name)
+            if (item.imageUrl != null && item.imageUrl != "") {
+                Picasso.with(context).load(item.imageUrl)
+                        .fit()
+                        .centerInside()
+                        .into(imageButton)
             }
-            if (item.imageUrl != null)
-            Picasso.with(context).load(item.imageUrl)
-                    .fit()
-                    .centerInside()
-                    .into(imageButton)
             nameText?.text = item.name
         } else {
+            imageButton?.setImageDrawable(resources.getDrawable(ic_menu_gallery))
+            nameText?.text = getString(R.string.information_not_available)
+        }
+    }
 
+    private fun getList(category: String): MutableList<Item> {
+        when (category) {
+            "game" ->  return gameList
+            "anime" -> return animeList
+            "manga" -> return mangaList
+            else -> return gameList
         }
     }
 }

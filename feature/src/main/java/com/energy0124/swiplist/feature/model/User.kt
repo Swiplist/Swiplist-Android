@@ -21,7 +21,7 @@ data class User(
         @Json(name = "_id") val id: String = "",
         val username: String = "",
         val email: String = "",
-        val description: String? = null,
+        var description: String = "",
         val friends: List<String> = listOf<String>(),
         val items: List<String> = listOf<String>(),
         val games: List<Item> = listOf<Item>(),

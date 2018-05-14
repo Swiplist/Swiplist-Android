@@ -61,24 +61,19 @@ class RankingActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener 
             0 -> {
                 Log.d("item", "game")
                 category = "game"
-                // val adapter = ViewItemAdapter(this, listOf(Item(name="game1"), Item(name="game2"), Item(name="game3"), Item(name="game4")))
-                // list?.adapter = adapter
             }
             1 -> {
                 Log.d("item", "anime")
                 category = "anime"
-                // val adapter = ViewItemAdapter(this, listOf(Item(name="anime1"), Item(name="anime2"), Item(name="anime3"), Item(name="anime4")))
-                // list?.adapter = adapter
             }
             2 -> {
                 Log.d("item", "manga")
                 category = "manga"
-                // val adapter = ViewItemAdapter(this, listOf(Item(name="manga1"), Item(name="manga2"), Item(name="manga3"), Item(name="manga4")))
-                // list?.adapter = adapter
             }
         }
-        Fuel.post(getString(R.string.server_base_url) + "/api/items/ranking",
-                listOf("categories" to category))
+        Fuel.post(getString(R.string.server_base_url) + "/api/items/ranking")
+                .body("{ \"categories\": [\"$category\"] }")
+                .header("Content-Type" to "application/json")
                 .response { request, response, result ->
                     when (result) {
                         is Result.Success -> {
