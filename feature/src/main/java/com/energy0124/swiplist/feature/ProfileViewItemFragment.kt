@@ -12,6 +12,7 @@ import android.widget.RadioButton
 import android.widget.RadioGroup
 import android.widget.TextView
 import com.energy0124.swiplist.feature.model.Item
+import com.github.kittinunf.forge.core.JSON
 import com.squareup.moshi.JsonAdapter
 import com.squareup.moshi.KotlinJsonAdapterFactory
 import com.squareup.moshi.Moshi
@@ -32,10 +33,11 @@ class ProfileViewItemFragment : ListFragment() {
         noItemsTextView = view.findViewById(R.id.profile_no_items_text)
 
         val sharePref = this.activity!!.getSharedPreferences(getString(R.string.preference_file_key), Context.MODE_PRIVATE)
-        val userObject = sharePref.getString(getString(R.string.user_info_key), "null")
-        val gamesArray: JSONArray = JSONObject(userObject).optJSONArray("games")
-        val animeArray: JSONArray = JSONObject(userObject).optJSONArray("anime")
-        val mangaArray: JSONArray = JSONObject(userObject).optJSONArray("manga")
+        val userJson = sharePref.getString(getString(R.string.user_info_key), "null")
+        val userObject = JSONObject(userJson)
+        val gamesArray: JSONArray = userObject.optJSONArray("games")
+        val animeArray: JSONArray = userObject.optJSONArray("anime")
+        val mangaArray: JSONArray = userObject.optJSONArray("manga")
 
         if (gamesArray.length() > 0) {
             val moshi = Moshi.Builder().add(KotlinJsonAdapterFactory()).build()

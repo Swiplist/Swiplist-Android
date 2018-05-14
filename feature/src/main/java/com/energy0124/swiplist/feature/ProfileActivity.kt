@@ -1,5 +1,6 @@
 package com.energy0124.swiplist.feature
 
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.support.design.widget.Snackbar
@@ -14,8 +15,11 @@ import android.view.Menu
 import android.view.MenuItem
 import android.widget.RadioButton
 import android.widget.Toast
+import com.github.kittinunf.forge.core.JSON
 import kotlinx.android.synthetic.main.activity_profile.*
 import kotlinx.android.synthetic.main.fragment_profile_view_item.*
+import org.json.JSONArray
+import org.json.JSONObject
 
 class ProfileActivity : AppCompatActivity() {
 
@@ -67,18 +71,25 @@ class ProfileActivity : AppCompatActivity() {
             R.id.profile_action_edit -> {
                 //Toast.makeText(applicationContext, "Edit", Toast.LENGTH_SHORT).show()
                 val currentPosition = container.currentItem
-                when(currentPosition){
+                when (currentPosition) {
                     0 -> {
                         // Edit Profile
                     }
                     1 -> {
                         // Edit Item List
+                        val sharePref = this.getSharedPreferences(getString(R.string.preference_file_key), Context.MODE_PRIVATE)
+                        val userJson = sharePref.getString(getString(R.string.user_info_key), "null")
+                        val userObject = JSONObject(userJson)
+                        val gamesArray: JSONArray = userObject.optJSONArray("games")
+                        val animeArray: JSONArray = userObject.optJSONArray("anime")
+                        val mangaArray: JSONArray = userObject.optJSONArray("manga")
+
                         var rbGame: RadioButton? = null
                         var rbAnime: RadioButton? = null
                         var rbManga: RadioButton? = null
                         val frags = this.supportFragmentManager.fragments
-                        for(f in frags){
-                            if("com.energy0124.swiplist.feature.ProfileViewItemFragment" == f.javaClass.name){
+                        for (f in frags) {
+                            if ("com.energy0124.swiplist.feature.ProfileViewItemFragment" == f.javaClass.name) {
                                 rbGame = f.view!!.findViewById<RadioButton>(R.id.game_filter_button)
                                 rbAnime = f.view!!.findViewById<RadioButton>(R.id.anime_filter_button)
                                 rbManga = f.view!!.findViewById<RadioButton>(R.id.manga_filter_button)
@@ -89,11 +100,31 @@ class ProfileActivity : AppCompatActivity() {
                         //Log.d("radio button", "anime")
                         //Log.d("radio button", "manga")
                         when {
-                            rbGame!!.isChecked -> intent.putExtra("category", "game")
-                            rbAnime!!.isChecked -> intent.putExtra("category", "anime")
-                            rbManga!!.isChecked -> intent.putExtra("category", "manga")
+                            rbGame!!.isChecked -> {
+                                if (gamesArray.length() > 0) {
+                                    intent.putExtra("category", "game")
+                                    startActivity(intent)
+                                } else {
+                                    Toast.makeText(this, "No games can be edited", Toast.LENGTH_SHORT).show()
+                                }
+                            }
+                            rbAnime!!.isChecked -> {
+                                if (animeArray.length() > 0) {
+                                    intent.putExtra("category", "anime")
+                                    startActivity(intent)
+                                } else {
+                                    Toast.makeText(this, "No anime can be edited", Toast.LENGTH_SHORT).show()
+                                }
+                            }
+                            rbManga!!.isChecked -> {
+                                if (mangaArray.length() > 0) {
+                                    intent.putExtra("category", "manga")
+                                    startActivity(intent)
+                                } else {
+                                    Toast.makeText(this, "No manga can be edited", Toast.LENGTH_SHORT).show()
+                                }
+                            }
                         }
-                        startActivity(intent)
                     }
                     2 -> {
                         // Edit Friend List
@@ -119,8 +150,10 @@ class ProfileActivity : AppCompatActivity() {
             override fun onTabSelected(tab: TabLayout.Tab) {
                 container.currentItem = tab.position
             }
+
             override fun onTabReselected(tab: TabLayout.Tab) {
             }
+
             override fun onTabUnselected(tab: TabLayout.Tab) {
             }
         })
