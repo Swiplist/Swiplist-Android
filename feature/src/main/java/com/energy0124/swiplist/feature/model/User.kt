@@ -22,7 +22,7 @@ data class User(
         val username: String = "",
         val email: String = "",
         var description: String = "",
-        var friends: MutableList<User> = mutableListOf(),
+        var friends: MutableList<MinifiedUser> = mutableListOf(),
         val items: List<String> = listOf(),
         var games: MutableList<Item> = mutableListOf(),
         var anime: MutableList<Item> = mutableListOf(),

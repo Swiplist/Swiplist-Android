@@ -137,13 +137,13 @@ class ProfileEditItemActivity : AppCompatActivity(), AdapterView.OnItemClickList
         val category = intent.extras.getString("category")
         when (category) {
             "game" -> {
-                editList = (application as SwiplistApplication).user!!.games as MutableList<Item>
+                editList = (application as SwiplistApplication).user!!.games
             }
             "anime" -> {
-                editList = (application as SwiplistApplication).user!!.anime as MutableList<Item>
+                editList = (application as SwiplistApplication).user!!.anime
             }
             "manga" -> {
-                editList = (application as SwiplistApplication).user!!.manga as MutableList<Item>
+                editList = (application as SwiplistApplication).user!!.manga
             }
         }
         //editList = packageManager.getInstalledApplications(0)

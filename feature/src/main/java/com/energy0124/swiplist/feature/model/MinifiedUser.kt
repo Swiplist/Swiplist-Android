@@ -6,5 +6,6 @@ import java.io.Serializable
 data class MinifiedUser(
         @Json(name = "_id") var id: String = "",
         var username: String = "",
-        var iconUrl: String? = null
+        var iconUrl: String? = null,
+        val email: String = ""
 ) : Serializable

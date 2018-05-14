@@ -22,9 +22,16 @@ class ProfileViewItemFragment : ListFragment() {
         list = view.findViewById(android.R.id.list)
         noItemsTextView = view.findViewById(R.id.profile_no_items_text)
 
-        val gameList = (this.activity!!.application as SwiplistApplication).user!!.games
-        val animeList = (this.activity!!.application as SwiplistApplication).user!!.anime
-        val mangaList = (this.activity!!.application as SwiplistApplication).user!!.manga
+        val currentUserId = arguments!!.get("currentUserId")
+        val currentUser = if ((this.activity!!.application as SwiplistApplication).user!!.id == currentUserId) {
+            (this.activity!!.application as SwiplistApplication).user
+        } else {
+            (this.activity!!.application as SwiplistApplication).friend
+        }
+
+        val gameList = currentUser!!.games
+        val animeList = currentUser.anime
+        val mangaList = currentUser.manga
 
         view.findViewById<RadioButton>(R.id.game_filter_button).isChecked = true
 
@@ -81,9 +88,15 @@ class ProfileViewItemFragment : ListFragment() {
 
     override fun onResume() {
         super.onResume()
-        val gameList = (this.activity!!.application as SwiplistApplication).user!!.games
-        val animeList = (this.activity!!.application as SwiplistApplication).user!!.anime
-        val mangaList = (this.activity!!.application as SwiplistApplication).user!!.manga
+        val currentUserId = arguments!!.get("currentUserId")
+        val currentUser = if ((this.activity!!.application as SwiplistApplication).user!!.id == currentUserId) {
+            (this.activity!!.application as SwiplistApplication).user
+        } else {
+            (this.activity!!.application as SwiplistApplication).friend
+        }
+        val gameList = currentUser!!.games
+        val animeList = currentUser.anime
+        val mangaList = currentUser.manga
 
         if ("" == currentCategory) {
             currentCategory = "game"

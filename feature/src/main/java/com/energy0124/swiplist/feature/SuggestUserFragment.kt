@@ -66,7 +66,7 @@ class SuggestUserFragment : Fragment() {
                                     if (response.statusCode == 200) {
                                         val responseBody = String(response.data)
                                         val moshi = Moshi.Builder().add(KotlinJsonAdapterFactory()).build()
-                                        val userAdapter = moshi.adapter(User::class.java)
+                                        val userAdapter = moshi.adapter(MinifiedUser::class.java)
                                         val friendToAdd = userAdapter.fromJson(responseBody)
                                         val currentUser = (this.activity!!.application as SwiplistApplication).user
                                         currentUser!!.friends.add(friendToAdd!!)

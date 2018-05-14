@@ -1,6 +1,7 @@
 package com.energy0124.swiplist.feature
 
 import android.content.Intent
+import android.opengl.Visibility
 import android.os.Bundle
 import android.support.design.widget.Snackbar
 import android.support.design.widget.TabLayout
@@ -12,8 +13,15 @@ import android.support.v7.app.AppCompatActivity
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
+import android.view.View
 import android.widget.RadioButton
 import android.widget.Toast
+import com.energy0124.swiplist.feature.model.MinifiedUser
+import com.energy0124.swiplist.feature.model.User
+import com.github.kittinunf.fuel.Fuel
+import com.github.kittinunf.result.Result
+import com.squareup.moshi.KotlinJsonAdapterFactory
+import com.squareup.moshi.Moshi
 import kotlinx.android.synthetic.main.activity_profile.*
 
 class ProfileActivity : AppCompatActivity() {
@@ -27,30 +35,83 @@ class ProfileActivity : AppCompatActivity() {
      * [android.support.v4.app.FragmentStatePagerAdapter].
      */
     private var mSectionsPagerAdapter: SectionsPagerAdapter? = null
+    private var currentUserId: String = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_profile)
 
-        // Create the adapter that will return a fragment for each of the three
-        // primary sections of the activity.
-        mSectionsPagerAdapter = SectionsPagerAdapter(supportFragmentManager)
+        // hide the button if not login user
+        currentUserId = intent.extras.getString("userId")
+        if (currentUserId != (application as SwiplistApplication).user!!.id) {
+            add_friend_button.visibility = View.VISIBLE
+            add_friend_button.setOnClickListener { view ->
+                Fuel.post(getString(R.string.server_base_url) + "/api/users/add/friend")
+                        .body("{ \"friend\": \"$currentUserId\" }")
+                        .header("Content-Type" to "application/json")
+                        .response { request, response, result ->
+                            when (result) {
+                                is Result.Success -> {
+                                    if (response.statusCode == 200) {
+                                        val moshi = Moshi.Builder().add(KotlinJsonAdapterFactory()).build()
+                                        val jsonAdapter = moshi.adapter(MinifiedUser::class.java)
+                                        val friendAdding = jsonAdapter.fromJson(String(response.data))
+                                        (application as SwiplistApplication).user!!.friends.add(friendAdding!!)
+                                        Snackbar.make(view, "Add Friend Success", Snackbar.LENGTH_LONG)
+                                                .setAction("Action", null).show()
+                                    }
+                                }
+                                is Result.Failure -> {
+                                    Toast.makeText(this, "Add Friend Fail", Toast.LENGTH_SHORT).show()
+                                }
+                            }
+                        }
+            }
+            Fuel.get(getString(R.string.server_base_url) + "/api/users/" + currentUserId).response { request, response, result ->
+                when (result) {
+                    is Result.Success -> {
+                        if (response.statusCode == 200) {
+                            val moshi = Moshi.Builder().add(KotlinJsonAdapterFactory()).build()
+                            val jsonAdapter = moshi.adapter(User::class.java)
+                            (application as SwiplistApplication).friend = jsonAdapter.fromJson(String(response.data))
 
-        // Set up the ViewPager with the sections adapter.
-        container.adapter = mSectionsPagerAdapter
-        configureTabLayout(container)
+                            // Create the adapter that will return a fragment for each of the three
+                            // primary sections of the activity.
+                            mSectionsPagerAdapter = SectionsPagerAdapter(supportFragmentManager)
 
-        fab.setOnClickListener { view ->
-            Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                    .setAction("Action", null).show()
+                            // Set up the ViewPager with the sections adapter.
+                            container.adapter = mSectionsPagerAdapter
+                            configureTabLayout(container)
+                        }
+                    }
+                    is Result.Failure -> {
+                        Toast.makeText(this, "Cannot access this user",
+                                Toast.LENGTH_SHORT).show()
+                        finish()
+                    }
+                }
+            }
+        } else {
+            add_friend_button.visibility = View.GONE
+
+            // Create the adapter that will return a fragment for each of the three
+            // primary sections of the activity.
+            mSectionsPagerAdapter = SectionsPagerAdapter(supportFragmentManager)
+
+            // Set up the ViewPager with the sections adapter.
+            container.adapter = mSectionsPagerAdapter
+            configureTabLayout(container)
         }
+
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
     }
 
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         // Inflate the menu; this adds items to the action bar if it is present.
-        menuInflater.inflate(R.menu.menu_profile, menu)
+        if (currentUserId == (application as SwiplistApplication).user!!.id) {
+            menuInflater.inflate(R.menu.menu_profile, menu)
+        }
         return true
     }
 
@@ -159,11 +220,29 @@ class ProfileActivity : AppCompatActivity() {
     inner class SectionsPagerAdapter(fm: FragmentManager) : FragmentPagerAdapter(fm) {
 
         override fun getItem(position: Int): Fragment {
-            return when (position) {
-                0 -> ProfileFragment()
-                1 -> ProfileViewItemFragment()
-                2 -> ProfileViewFriendFragment()
-                else -> ProfileFragment()
+            val bundle = Bundle()
+            bundle.putString("currentUserId", currentUserId)
+            when (position) {
+                0 -> {
+                    val fragObj = ProfileFragment()
+                    fragObj.arguments = bundle
+                    return fragObj
+                }
+                1 -> {
+                    val fragObj = ProfileViewItemFragment()
+                    fragObj.arguments = bundle
+                    return fragObj
+                }
+                2 -> {
+                    val fragObj = ProfileViewFriendFragment()
+                    fragObj.arguments = bundle
+                    return fragObj
+                }
+                else -> {
+                    val fragObj = ProfileFragment()
+                    fragObj.arguments = bundle
+                    return fragObj
+                }
             }
             // getItem is called to instantiate the fragment for the given page.
             // Return a PlaceholderFragment (defined as a static inner class below).

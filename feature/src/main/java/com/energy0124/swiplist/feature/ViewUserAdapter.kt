@@ -9,10 +9,11 @@ import android.widget.BaseAdapter
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
+import com.energy0124.swiplist.feature.model.MinifiedUser
 import com.energy0124.swiplist.feature.model.User
 import com.squareup.picasso.Picasso
 
-class ViewUserAdapter(context: Context, data: List<User>) : BaseAdapter() {
+class ViewUserAdapter(context: Context, data: List<MinifiedUser>) : BaseAdapter() {
         private val mContext = context
         private val userList = data
         private val inflater = LayoutInflater.from(mContext)

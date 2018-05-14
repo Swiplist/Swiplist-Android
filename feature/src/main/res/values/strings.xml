@@ -52,6 +52,7 @@
     <string name="profile_action_edit">Edit</string>
     <string name="profile_action_save">Save</string>
     <string name="profile_no_items">No Items</string>
+    <string name="profile_no_friends">No Friends</string>
 
     <string name="information_not_available">Not Available</string>
 

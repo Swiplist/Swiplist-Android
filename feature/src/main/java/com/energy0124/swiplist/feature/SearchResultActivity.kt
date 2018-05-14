@@ -9,6 +9,7 @@ import android.view.View
 import android.widget.ListView
 import android.widget.Toast
 import com.energy0124.swiplist.feature.model.Item
+import com.energy0124.swiplist.feature.model.MinifiedUser
 import com.energy0124.swiplist.feature.model.User
 import com.github.kittinunf.fuel.Fuel
 import com.github.kittinunf.fuel.core.FuelManager
@@ -91,8 +92,8 @@ class SearchResultActivity : AppCompatActivity() {
                                         Log.d("arraySize", userArray.length().toString())
                                         if (userArray.length() > 0) {       // has result
                                             val moshi = Moshi.Builder().add(KotlinJsonAdapterFactory()).build()
-                                            val type = Types.newParameterizedType(List::class.java, User::class.java)
-                                            val userListAdapter: JsonAdapter<List<User>> = moshi.adapter(type)
+                                            val type = Types.newParameterizedType(List::class.java, MinifiedUser::class.java)
+                                            val userListAdapter: JsonAdapter<List<MinifiedUser>> = moshi.adapter(type)
                                             val userList = userListAdapter.fromJson(responseBody)
                                             val adapter = ViewUserAdapter(this, userList!!)
                                             list?.adapter = adapter

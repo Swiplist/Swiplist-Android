@@ -46,6 +46,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         val navHeaderProfileButton = navHeader.findViewById<ImageButton>(R.id.nav_profile_picture)
         navHeaderProfileButton.setOnClickListener {
             val intent = Intent(this, ProfileActivity::class.java)
+            intent.putExtra("userId", (application as SwiplistApplication).user!!.id)
             startActivity(intent)
             drawer_layout.closeDrawer(GravityCompat.START)
         }
