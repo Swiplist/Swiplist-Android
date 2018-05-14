@@ -22,11 +22,11 @@ data class User(
         val username: String = "",
         val email: String = "",
         var description: String = "",
-        var friends: List<User> = listOf<User>(),
-        val items: List<String> = listOf<String>(),
-        var games: MutableList<Item> = mutableListOf<Item>(),
-        var anime: MutableList<Item> = mutableListOf<Item>(),
-        var manga: MutableList<Item> = mutableListOf<Item>(),
+        var friends: MutableList<User> = mutableListOf(),
+        val items: List<String> = listOf(),
+        var games: MutableList<Item> = mutableListOf(),
+        var anime: MutableList<Item> = mutableListOf(),
+        var manga: MutableList<Item> = mutableListOf(),
         val iconUrl: String? = null,
         val mobileNumber: String? = null
 ) : Serializable
