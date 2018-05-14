@@ -14,6 +14,8 @@ import android.widget.TextView
 class ProfileViewItemFragment : ListFragment() {
     private var list: ListView? = null
     private lateinit var noItemsTextView: TextView
+    private var currentCategory: String = ""
+
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view = inflater.inflate(R.layout.fragment_profile_view_item, container, false)
@@ -26,20 +28,11 @@ class ProfileViewItemFragment : ListFragment() {
 
         view.findViewById<RadioButton>(R.id.game_filter_button).isChecked = true
 
-        if (gameList.count() > 0) {
-            val presetAdapter = ViewItemAdapter(context!!, gameList)
-            noItemsTextView.visibility = View.GONE
-            list?.visibility = View.VISIBLE
-            list?.adapter = presetAdapter
-        } else {
-            noItemsTextView.visibility = View.VISIBLE
-            list?.visibility = View.GONE
-        }
-
         val radioGroup = view.findViewById<RadioGroup>(R.id.filter_button_group)
         radioGroup.setOnCheckedChangeListener { _, i ->
             when (i) {
                 R.id.game_filter_button -> {
+                    currentCategory = "game"
                     //Log.d("button", "game")
                     if (gameList.count() > 0) {
                         val adapter = ViewItemAdapter(context!!, gameList)
@@ -52,6 +45,7 @@ class ProfileViewItemFragment : ListFragment() {
                     }
                 }
                 R.id.anime_filter_button -> {
+                    currentCategory = "anime"
                     //Log.d("button", "anime")
                     if (animeList.count() > 0) {
                         val adapter = ViewItemAdapter(context!!, animeList)
@@ -64,6 +58,7 @@ class ProfileViewItemFragment : ListFragment() {
                     }
                 }
                 R.id.manga_filter_button -> {
+                    currentCategory = "manga"
                     //Log.d("button", "manga")
                     if (mangaList.count() > 0) {
                         val adapter = ViewItemAdapter(context!!, mangaList)
@@ -82,5 +77,61 @@ class ProfileViewItemFragment : ListFragment() {
         }
 
         return view
+    }
+
+    override fun onResume() {
+        super.onResume()
+        val gameList = (this.activity!!.application as SwiplistApplication).user!!.games
+        val animeList = (this.activity!!.application as SwiplistApplication).user!!.anime
+        val mangaList = (this.activity!!.application as SwiplistApplication).user!!.manga
+
+        if ("" == currentCategory) {
+            currentCategory = "game"
+            if (gameList.count() > 0) {
+                val presetAdapter = ViewItemAdapter(context!!, gameList)
+                noItemsTextView.visibility = View.GONE
+                list?.visibility = View.VISIBLE
+                list?.adapter = presetAdapter
+            } else {
+                noItemsTextView.visibility = View.VISIBLE
+                list?.visibility = View.GONE
+            }
+        } else {
+            when (currentCategory) {
+                "game" -> {
+                    if (gameList.count() > 0) {
+                        val adapter = ViewItemAdapter(context!!, gameList)
+                        noItemsTextView.visibility = View.GONE
+                        list?.visibility = View.VISIBLE
+                        list?.adapter = adapter
+                    } else {
+                        noItemsTextView.visibility = View.VISIBLE
+                        list?.visibility = View.GONE
+                    }
+                }
+                "anime" -> {
+                    if (animeList.count() > 0) {
+                        val adapter = ViewItemAdapter(context!!, animeList)
+                        noItemsTextView.visibility = View.GONE
+                        list?.visibility = View.VISIBLE
+                        list?.adapter = adapter
+                    } else {
+                        noItemsTextView.visibility = View.VISIBLE
+                        list?.visibility = View.GONE
+                    }
+                }
+                "manga" -> {
+                    if (mangaList.count() > 0) {
+                        val adapter = ViewItemAdapter(context!!, mangaList)
+                        noItemsTextView.visibility = View.GONE
+                        list?.visibility = View.VISIBLE
+                        list?.adapter = adapter
+                    } else {
+                        noItemsTextView.visibility = View.VISIBLE
+                        list?.visibility = View.GONE
+                    }
+                }
+            }
+        }
     }
 }

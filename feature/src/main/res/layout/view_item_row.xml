@@ -19,7 +19,7 @@
         android:layout_width="120dp"
         android:layout_height="120dp"
         android:layout_marginLeft="10dp"
-        app:srcCompat="@drawable/ic_account_box_black_48dp"
+        app:srcCompat="@drawable/baseline_photo_black_48dp"
         />
 
     <LinearLayout

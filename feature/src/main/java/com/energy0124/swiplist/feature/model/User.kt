@@ -24,9 +24,9 @@ data class User(
         val description: String? = null,
         val friends: List<String> = listOf<String>(),
         val items: List<String> = listOf<String>(),
-        val games: List<Item> = listOf<Item>(),
-        val anime: List<Item> = listOf<Item>(),
-        val manga: List<Item> = listOf<Item>(),
+        var games: List<Item> = listOf<Item>(),
+        var anime: List<Item> = listOf<Item>(),
+        var manga: List<Item> = listOf<Item>(),
         val iconUrl: String? = null,
         val mobileNumber: String? = null
 ) : Serializable
