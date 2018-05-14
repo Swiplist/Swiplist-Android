@@ -82,8 +82,12 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                         val email: String = JSONObject(responseBody).getString("email")
                         val items: JSONArray? = JSONObject(responseBody).optJSONArray("items")
                         val friends: JSONArray? = JSONObject(responseBody).optJSONArray("friends")
+                        val games: JSONArray? = JSONObject(responseBody).optJSONArray("games")
+                        val anime: JSONArray? = JSONObject(responseBody).optJSONArray("anime")
+                        val manga: JSONArray? = JSONObject(responseBody).optJSONArray("manga")
                         val iconUrl: String? = JSONObject(responseBody).optString("iconUrl")
                         val description: String? = JSONObject(responseBody).optString("description")
+                        val mobileNumber: String? = JSONObject(responseBody).optString("mobileNumber")
                         /*userMap = mapOf("username" to username,
                                 "email" to email,
                                 "items" to items,
@@ -95,8 +99,12 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                         userInfoJson.put("email", email)
                         userInfoJson.put("items", items)
                         userInfoJson.put("friends", friends)
+                        userInfoJson.put("games", games)
+                        userInfoJson.put("anime", anime)
+                        userInfoJson.put("manga", manga)
                         userInfoJson.put("iconUrl", iconUrl)
                         userInfoJson.put("description", description)
+                        userInfoJson.put("mobileNumber", mobileNumber)
                         //Log.d("jsonObj", userInfoJson.toString())
                         with(sharePref.edit()) {
                             putString(getString(R.string.user_info_key), userInfoJson.toString())
