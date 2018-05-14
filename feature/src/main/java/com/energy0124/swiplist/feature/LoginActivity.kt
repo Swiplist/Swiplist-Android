@@ -6,9 +6,13 @@ import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.util.Log
 import android.widget.Toast
+import com.energy0124.swiplist.feature.model.User
 import com.github.kittinunf.fuel.Fuel
 import com.github.kittinunf.fuel.android.core.Json
+import com.github.kittinunf.fuel.core.FuelManager
 import com.github.kittinunf.result.Result
+import com.squareup.moshi.KotlinJsonAdapterFactory
+import com.squareup.moshi.Moshi
 import kotlinx.android.synthetic.main.activity_login.*
 
 class LoginActivity : AppCompatActivity() {
@@ -47,16 +51,37 @@ class LoginActivity : AppCompatActivity() {
                                         Log.d("response-body", responseBody)
                                         val authKey : String? = Json(responseBody).obj()["token"].toString()
                                         Log.d("auth-key", authKey)
-                                        val sharePref = this@LoginActivity.getSharedPreferences(
-                                                getString(R.string.preference_file_key), Context.MODE_PRIVATE)
-                                        with (sharePref.edit()) {
-                                            putString(getString(R.string.authorization_key), authKey)
-                                            commit()
+
+                                        FuelManager.instance.baseHeaders = mapOf("Authorization" to "Bearer $authKey")
+                                        Fuel.get(getString(R.string.server_base_url) + "/api/users/me").response { meRequest, meResponse, meResult ->
+                                            when (meResult) {
+                                                is Result.Success -> {
+                                                    if (meResponse.statusCode == 200) {     // HTTP OK
+                                                        val meResponseBody = String(meResponse.data)
+                                                        val moshi = Moshi.Builder().add(KotlinJsonAdapterFactory()).build()
+                                                        val jsonAdapter = moshi.adapter(User::class.java)
+                                                        (application as SwiplistApplication).user = jsonAdapter.fromJson(meResponseBody)
+
+                                                        val sharedPref = this@LoginActivity.getSharedPreferences(
+                                                                getString(R.string.preference_file_key), Context.MODE_PRIVATE)
+                                                        with (sharedPref.edit()) {
+                                                            putString(getString(R.string.authorization_key), authKey)
+                                                            commit()
+                                                        }
+
+                                                        val intent = Intent(this, MainActivity::class.java)
+                                                        startActivity(intent)
+                                                        finish()
+                                                    }
+                                                }
+                                                is Result.Failure -> {
+                                                    val ex = meResult.getException()
+                                                    Log.d("re-exception", ex.toString())
+                                                    Toast.makeText(applicationContext, ex.toString(),
+                                                            Toast.LENGTH_LONG).show()
+                                                }
+                                            }
                                         }
-                                        // start main activity
-                                        val intent = Intent(this, MainActivity::class.java)
-                                        startActivity(intent)
-                                        finish()
                                     }
                                 }
                                 is Result.Failure -> {

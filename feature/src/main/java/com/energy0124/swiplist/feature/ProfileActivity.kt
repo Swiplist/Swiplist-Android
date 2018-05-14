@@ -1,6 +1,5 @@
 package com.energy0124.swiplist.feature
 
-import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.support.design.widget.Snackbar
@@ -15,11 +14,7 @@ import android.view.Menu
 import android.view.MenuItem
 import android.widget.RadioButton
 import android.widget.Toast
-import com.github.kittinunf.forge.core.JSON
 import kotlinx.android.synthetic.main.activity_profile.*
-import kotlinx.android.synthetic.main.fragment_profile_view_item.*
-import org.json.JSONArray
-import org.json.JSONObject
 
 class ProfileActivity : AppCompatActivity() {
 
@@ -77,12 +72,9 @@ class ProfileActivity : AppCompatActivity() {
                     }
                     1 -> {
                         // Edit Item List
-                        val sharePref = this.getSharedPreferences(getString(R.string.preference_file_key), Context.MODE_PRIVATE)
-                        val userJson = sharePref.getString(getString(R.string.user_info_key), "null")
-                        val userObject = JSONObject(userJson)
-                        val gamesArray: JSONArray = userObject.optJSONArray("games")
-                        val animeArray: JSONArray = userObject.optJSONArray("anime")
-                        val mangaArray: JSONArray = userObject.optJSONArray("manga")
+                        val gamesArray = (application as SwiplistApplication).user!!.games
+                        val animeArray = (application as SwiplistApplication).user!!.anime
+                        val mangaArray = (application as SwiplistApplication).user!!.manga
 
                         var rbGame: RadioButton? = null
                         var rbAnime: RadioButton? = null
@@ -90,9 +82,9 @@ class ProfileActivity : AppCompatActivity() {
                         val frags = this.supportFragmentManager.fragments
                         for (f in frags) {
                             if ("com.energy0124.swiplist.feature.ProfileViewItemFragment" == f.javaClass.name) {
-                                rbGame = f.view!!.findViewById<RadioButton>(R.id.game_filter_button)
-                                rbAnime = f.view!!.findViewById<RadioButton>(R.id.anime_filter_button)
-                                rbManga = f.view!!.findViewById<RadioButton>(R.id.manga_filter_button)
+                                rbGame = f.view!!.findViewById(R.id.game_filter_button)
+                                rbAnime = f.view!!.findViewById(R.id.anime_filter_button)
+                                rbManga = f.view!!.findViewById(R.id.manga_filter_button)
                             }
                         }
                         val intent = Intent(this, ProfileEditItemActivity::class.java)
@@ -101,7 +93,7 @@ class ProfileActivity : AppCompatActivity() {
                         //Log.d("radio button", "manga")
                         when {
                             rbGame!!.isChecked -> {
-                                if (gamesArray.length() > 0) {
+                                if (gamesArray.count() > 0) {
                                     intent.putExtra("category", "game")
                                     startActivity(intent)
                                 } else {
@@ -109,7 +101,7 @@ class ProfileActivity : AppCompatActivity() {
                                 }
                             }
                             rbAnime!!.isChecked -> {
-                                if (animeArray.length() > 0) {
+                                if (animeArray.count() > 0) {
                                     intent.putExtra("category", "anime")
                                     startActivity(intent)
                                 } else {
@@ -117,7 +109,7 @@ class ProfileActivity : AppCompatActivity() {
                                 }
                             }
                             rbManga!!.isChecked -> {
-                                if (mangaArray.length() > 0) {
+                                if (mangaArray.count() > 0) {
                                     intent.putExtra("category", "manga")
                                     startActivity(intent)
                                 } else {
