@@ -14,9 +14,12 @@ import android.view.MenuItem
 import android.widget.ImageButton
 import android.widget.TextView
 import android.widget.Toast
+import com.energy0124.swiplist.feature.model.User
 import com.github.kittinunf.fuel.Fuel
 import com.github.kittinunf.fuel.core.FuelManager
 import com.github.kittinunf.result.Result
+import com.squareup.moshi.KotlinJsonAdapterFactory
+import com.squareup.moshi.Moshi
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.app_bar_main.*
 import kotlinx.android.synthetic.main.content_main.*
@@ -78,12 +81,16 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 is Result.Success -> {
                     if (response.statusCode == 200) {     // HTTP OK
                         val responseBody = String(response.data)
-                        val username: String = JSONObject(responseBody).getString("username")
+                        /*val username: String = JSONObject(responseBody).getString("username")
                         val email: String = JSONObject(responseBody).getString("email")
                         val items: JSONArray? = JSONObject(responseBody).optJSONArray("items")
                         val friends: JSONArray? = JSONObject(responseBody).optJSONArray("friends")
+                        val games: JSONArray? = JSONObject(responseBody).optJSONArray("games")
+                        val anime: JSONArray? = JSONObject(responseBody).optJSONArray("anime")
+                        val manga: JSONArray? = JSONObject(responseBody).optJSONArray("manga")
                         val iconUrl: String? = JSONObject(responseBody).optString("iconUrl")
                         val description: String? = JSONObject(responseBody).optString("description")
+                        val mobileNumber: String? = JSONObject(responseBody).optString("mobileNumber")
                         /*userMap = mapOf("username" to username,
                                 "email" to email,
                                 "items" to items,
@@ -95,21 +102,31 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                         userInfoJson.put("email", email)
                         userInfoJson.put("items", items)
                         userInfoJson.put("friends", friends)
+                        userInfoJson.put("games", games)
+                        userInfoJson.put("anime", anime)
+                        userInfoJson.put("manga", manga)
                         userInfoJson.put("iconUrl", iconUrl)
                         userInfoJson.put("description", description)
+                        userInfoJson.put("mobileNumber", mobileNumber)*/
                         //Log.d("jsonObj", userInfoJson.toString())
+                        val moshi = Moshi.Builder().add(KotlinJsonAdapterFactory()).build()
+                        val jsonAdapter = moshi.adapter(User::class.java)
+                        val user = jsonAdapter.fromJson(responseBody)
+                        val userJson = jsonAdapter.toJson(user)
+
                         with(sharePref.edit()) {
-                            putString(getString(R.string.user_info_key), userInfoJson.toString())
+//                            putString(getString(R.string.user_info_key), userInfoJson.toString())
+                            putString(getString(R.string.user_info_key), userJson)
                             commit()
                         }
 
                         // set the user info in the navigation bar
                         val navHeader = nav_view.getHeaderView(0)
                         val navHeaderUserTextView = navHeader.findViewById<TextView>(R.id.nav_username)
-                        navHeaderUserTextView.text = username
+                        navHeaderUserTextView.text = user!!.username
                         //Log.d("text", navHeaderUserTextView.text.toString())
                         val navHeaderProfileButton = navHeader.findViewById<ImageButton>(R.id.nav_profile_picture)
-                        if ("" != iconUrl) {
+                        if ("" != user.iconUrl) {
                             //  navHeaderProfileButton.setImageResource(R.drawable.ic_exit_to_app_black_18dp)
                         } else {
                             navHeaderProfileButton.setImageResource(R.drawable.ic_account_box_black_48dp)
