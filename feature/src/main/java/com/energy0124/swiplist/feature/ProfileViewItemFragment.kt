@@ -10,28 +10,21 @@ import android.widget.ListView
 import android.widget.RadioButton
 import android.widget.RadioGroup
 import android.widget.TextView
+import com.energy0124.swiplist.feature.model.Item
 
 class ProfileViewItemFragment : ListFragment() {
     private var list: ListView? = null
     private lateinit var noItemsTextView: TextView
     private var currentCategory: String = ""
+    private var gameList: MutableList<Item> = mutableListOf()
+    private var animeList: MutableList<Item> = mutableListOf()
+    private var mangaList: MutableList<Item> = mutableListOf()
 
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view = inflater.inflate(R.layout.fragment_profile_view_item, container, false)
         list = view.findViewById(android.R.id.list)
         noItemsTextView = view.findViewById(R.id.profile_no_items_text)
-
-        val currentUserId = arguments!!.get("currentUserId")
-        val currentUser = if ((this.activity!!.application as SwiplistApplication).user!!.id == currentUserId) {
-            (this.activity!!.application as SwiplistApplication).user
-        } else {
-            (this.activity!!.application as SwiplistApplication).friend
-        }
-
-        val gameList = currentUser!!.games
-        val animeList = currentUser.anime
-        val mangaList = currentUser.manga
 
         view.findViewById<RadioButton>(R.id.game_filter_button).isChecked = true
 
@@ -94,9 +87,9 @@ class ProfileViewItemFragment : ListFragment() {
         } else {
             (this.activity!!.application as SwiplistApplication).friend
         }
-        val gameList = currentUser!!.games
-        val animeList = currentUser.anime
-        val mangaList = currentUser.manga
+        gameList = currentUser!!.games
+        animeList = currentUser.anime
+        mangaList = currentUser.manga
 
         if ("" == currentCategory) {
             currentCategory = "game"

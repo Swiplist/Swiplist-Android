@@ -9,6 +9,7 @@ import android.util.Log
 import android.view.*
 import android.widget.*
 import com.energy0124.swiplist.feature.model.Item
+import com.energy0124.swiplist.feature.model.MinifiedUser
 import com.github.kittinunf.fuel.Fuel
 import com.github.kittinunf.fuel.core.FuelManager
 import com.github.kittinunf.result.Result
@@ -137,13 +138,19 @@ class ProfileEditItemActivity : AppCompatActivity(), AdapterView.OnItemClickList
         val category = intent.extras.getString("category")
         when (category) {
             "game" -> {
-                editList = (application as SwiplistApplication).user!!.games
+                val tempList: MutableList<Item> = mutableListOf()
+                tempList.addAll((application as SwiplistApplication).user!!.games)
+                editList = tempList
             }
             "anime" -> {
-                editList = (application as SwiplistApplication).user!!.anime
+                val tempList: MutableList<Item> = mutableListOf()
+                tempList.addAll((application as SwiplistApplication).user!!.anime)
+                editList = tempList
             }
             "manga" -> {
-                editList = (application as SwiplistApplication).user!!.manga
+                val tempList: MutableList<Item> = mutableListOf()
+                tempList.addAll((application as SwiplistApplication).user!!.manga)
+                editList = tempList
             }
         }
         //editList = packageManager.getInstalledApplications(0)

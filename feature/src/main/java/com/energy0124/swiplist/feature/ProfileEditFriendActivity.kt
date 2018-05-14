@@ -1,13 +1,18 @@
 package com.energy0124.swiplist.feature
 
-import android.content.pm.ApplicationInfo
+import android.content.Context
 import android.graphics.Color
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import android.view.*
 import android.widget.*
+import com.energy0124.swiplist.feature.model.MinifiedUser
+import com.github.kittinunf.fuel.Fuel
+import com.github.kittinunf.fuel.core.FuelManager
+import com.github.kittinunf.result.Result
 import com.yydcdut.sdlv.SlideAndDragListView
+import com.squareup.picasso.Picasso
+import org.json.JSONArray
 
 class ProfileEditFriendActivity : AppCompatActivity(), AdapterView.OnItemClickListener,
         AdapterView.OnItemLongClickListener, AbsListView.OnScrollListener,
@@ -17,11 +22,11 @@ class ProfileEditFriendActivity : AppCompatActivity(), AdapterView.OnItemClickLi
     //private val TAG = ProfileEditItemActivity::class.java.simpleName
 
     private lateinit var mMenu: com.yydcdut.sdlv.Menu
-    //private lateinit var mAppList: MutableList<ApplicationInfo>
-    private lateinit var mAppList: ArrayList<String>
+    //private lateinit var editList: MutableList<ApplicationInfo>
+    private lateinit var editList: MutableList<MinifiedUser>
     private lateinit var mListView: SlideAndDragListView
     //private lateinit var mToast: Toast
-    private lateinit var mDraggedEntity: String
+    private lateinit var mDraggedEntity: MinifiedUser
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -46,13 +51,39 @@ class ProfileEditFriendActivity : AppCompatActivity(), AdapterView.OnItemClickLi
                 onBackPressed()
                 return true
             }
+            R.id.profile_action_save -> {
+                val idList = editList.map { it.id }
+                val sharePref = this.getSharedPreferences(getString(R.string.preference_file_key), Context.MODE_PRIVATE)
+                val token = sharePref.getString(getString(R.string.authorization_key), "null")
+                FuelManager.instance.baseHeaders = mapOf("Authorization" to "Bearer $token")
+                Fuel.put(getString(R.string.server_base_url) + "/api/users/me")
+                        .body("{ \"friends\" : ${JSONArray(idList)}}")
+                        .header("Content-Type" to "application/json")
+                        .response { request, response, result ->
+                            when (result) {
+                                is Result.Success -> {
+                                    if (response.statusCode == 200) {
+                                        (application as SwiplistApplication).user!!.friends = editList
+                                        finish()
+                                    }
+                                }
+                                is Result.Failure -> {
+                                    Toast.makeText(this, "Save Fail",
+                                            Toast.LENGTH_LONG).show()
+                                }
+                            }
+                        }
+                return true
+            }
             else -> return super.onOptionsItemSelected(item)
         }
     }
 
     private fun initData() {
-        mAppList = arrayListOf("test1", "test2", "test3", "test4", "test5")
-        //mAppList = packageManager.getInstalledApplications(0)
+        val tempList: MutableList<MinifiedUser> = mutableListOf()
+        tempList.addAll((application as SwiplistApplication).user!!.friends)
+        editList = tempList
+        //editList = packageManager.getInstalledApplications(0)
     }
 
     private fun initMenu() {
@@ -82,15 +113,15 @@ class ProfileEditFriendActivity : AppCompatActivity(), AdapterView.OnItemClickLi
     private val mAdapter = object : BaseAdapter() {
 
         override fun getCount(): Int {
-            return mAppList.size
+            return editList.size
         }
 
         override fun getItem(position: Int): Any {
-            return mAppList[position]
+            return editList[position]
         }
 
         override fun getItemId(position: Int): Long {
-            return mAppList[position].hashCode().toLong()
+            return editList[position].hashCode().toLong()
         }
 
         override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
@@ -108,8 +139,19 @@ class ProfileEditFriendActivity : AppCompatActivity(), AdapterView.OnItemClickLi
             } else {
                 cvh = listCellView.tag as CustomViewHolder
             }
-            cvh.txtName!!.text = mAppList[position]
+            if (editList[position].username.length <= 40) {
+                cvh.txtName!!.text = editList[position].username
+            } else {
+                val temp = editList[position].username.substring(0, 39) + "..."
+                cvh.txtName!!.text = temp
+            }
             cvh.imgLogo!!.setImageDrawable(getDrawable(R.drawable.ic_account_box_black_48dp))
+            if (null != editList[position].iconUrl) {
+                Picasso.with(this@ProfileEditFriendActivity).load(editList[position].iconUrl)
+                        .fit()
+                        .centerCrop()
+                        .into(cvh.imgLogo)
+            }
             cvh.imgLogo2!!.setImageDrawable(getDrawable(R.drawable.ic_reorder_grey_500_24dp))
             cvh.imgLogo2!!.tag = Integer.parseInt(position.toString())
             //cvh.number!!.text = (position + 1).toString()
@@ -133,18 +175,18 @@ class ProfileEditFriendActivity : AppCompatActivity(), AdapterView.OnItemClickLi
     }
 
     override fun onDragViewStart(beginPosition: Int) {
-        mDraggedEntity = mAppList[beginPosition]
+        mDraggedEntity = editList[beginPosition]
         //toast("onDragViewStart   beginPosition--->$beginPosition")
     }
 
     override fun onDragDropViewMoved(fromPosition: Int, toPosition: Int) {
-        val applicationInfo = mAppList.removeAt(fromPosition)
-        mAppList.add(toPosition, applicationInfo)
+        val applicationInfo = editList.removeAt(fromPosition)
+        editList.add(toPosition, applicationInfo)
         //toast("onDragDropViewMoved   fromPosition--->$fromPosition  toPosition-->$toPosition")
     }
 
     override fun onDragViewDown(finalPosition: Int) {
-        mAppList.set(finalPosition, mDraggedEntity)
+        editList.set(finalPosition, mDraggedEntity)
         //toast("onDragViewDown   finalPosition--->$finalPosition")
     }
 
@@ -162,7 +204,7 @@ class ProfileEditFriendActivity : AppCompatActivity(), AdapterView.OnItemClickLi
     }
 
     override fun onItemDeleteAnimationFinished(view: View, position: Int) {
-        mAppList.removeAt(position - mListView.headerViewsCount)
+        editList.removeAt(position - mListView.headerViewsCount)
         mAdapter.notifyDataSetChanged()
         //toast("onItemDeleteAnimationFinished   position--->$position")
     }
