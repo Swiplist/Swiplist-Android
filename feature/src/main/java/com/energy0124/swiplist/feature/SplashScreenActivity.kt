@@ -20,6 +20,7 @@ class SplashScreenActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_splash_screen)
         supportActionBar?.elevation = 0f
+        supportActionBar?.title = ""
 
         Handler().postDelayed({
             if (!isFinishing) {
