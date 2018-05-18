@@ -52,16 +52,16 @@ class SuggestItemFragment : Fragment() {
         fetchSuggestion("manga", false)
 
         view.findViewById<RadioButton>(R.id.game_filter_button).isChecked = true
-        currentCategory = "game"
+        currentCategory = "games"
 
         val radioGroup = view.findViewById<RadioGroup>(R.id.filter_button_group)
         radioGroup.setOnCheckedChangeListener { radioGroup, i ->
             // when change filter, fetch suggest list from server, refresh card information
             when (i) {
                 R.id.game_filter_button -> {
-                    currentCategory = "game"
+                    currentCategory = "games"
                     if (gameList.isEmpty()) {
-                        fetchSuggestion("game")
+                        fetchSuggestion("games")
                     } else {
                         fillCardInfo(gameList)
                     }
@@ -113,7 +113,7 @@ class SuggestItemFragment : Fragment() {
                                         Toast.makeText(context, "Liked", Toast.LENGTH_SHORT).show()
                                         val currentUser = (this.activity!!.application as SwiplistApplication).user
                                         when (currentCategory) {
-                                            "game" -> currentUser!!.games.add(list.first())
+                                            "games" -> currentUser!!.games.add(list.first())
                                             "anime" -> currentUser!!.anime.add(list.first())
                                             "manga" -> currentUser!!.manga.add(list.first())
                                         }
@@ -227,7 +227,7 @@ class SuggestItemFragment : Fragment() {
 
     private fun getList(category: String): MutableList<Item> {
         when (category) {
-            "game" -> return gameList
+            "games" -> return gameList
             "anime" -> return animeList
             "manga" -> return mangaList
             else -> return gameList

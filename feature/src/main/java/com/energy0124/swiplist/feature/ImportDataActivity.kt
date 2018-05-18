@@ -8,14 +8,14 @@ import android.support.design.widget.TextInputEditText
 import android.support.v7.app.AppCompatActivity
 import android.util.Log
 import android.view.View
-import android.widget.AdapterView
+import android.widget.*
 import android.widget.AdapterView.OnItemSelectedListener
-import android.widget.ArrayAdapter
-import android.widget.Spinner
-import android.widget.TextView
+import com.energy0124.swiplist.feature.model.User
 import com.github.kittinunf.fuel.Fuel
 import com.github.kittinunf.fuel.core.FuelManager
 import com.github.kittinunf.result.Result
+import com.squareup.moshi.KotlinJsonAdapterFactory
+import com.squareup.moshi.Moshi
 
 import kotlinx.android.synthetic.main.activity_import_data.*
 
@@ -65,7 +65,27 @@ class ImportDataActivity : AppCompatActivity(), OnItemSelectedListener, View.OnC
                             when (result) {
                                 is Result.Success -> {
                                     if (response.statusCode == 200) {     // HTTP OK
-                                        Snackbar.make(view, "Import Success", Snackbar.LENGTH_LONG)
+                                        Fuel.get(getString(R.string.server_base_url) + "/api/users/me").response { request, response, result ->
+                                            when (result) {
+                                                is Result.Success -> {
+                                                    if (response.statusCode == 200) {     // HTTP OK
+                                                        val responseBody = String(response.data)
+                                                        val moshi = Moshi.Builder().add(KotlinJsonAdapterFactory()).build()
+                                                        val jsonAdapter = moshi.adapter(User::class.java)
+                                                        (application as SwiplistApplication).user = jsonAdapter.fromJson(responseBody)
+                                                        Snackbar.make(view, "Profile Refresh Success", Snackbar.LENGTH_LONG)
+                                                                .setAction("Action", null).show()
+                                                    }
+                                                }
+                                                is Result.Failure -> {
+                                                    val ex = result.getException()
+                                                    Log.d("re-exception", ex.toString())
+                                                    Toast.makeText(applicationContext, ex.toString(),
+                                                            Toast.LENGTH_LONG).show()
+                                                }
+                                            }
+                                        }
+                                        Snackbar.make(view, "Import Success, refreshing profile", Snackbar.LENGTH_LONG)
                                                 .setAction("Action", null).show()
                                     }
                                 }
@@ -85,7 +105,27 @@ class ImportDataActivity : AppCompatActivity(), OnItemSelectedListener, View.OnC
                             when (result) {
                                 is Result.Success -> {
                                     if (response.statusCode == 200) {     // HTTP OK
-                                        Snackbar.make(view, "Import Success", Snackbar.LENGTH_LONG)
+                                        Fuel.get(getString(R.string.server_base_url) + "/api/users/me").response { request, response, result ->
+                                            when (result) {
+                                                is Result.Success -> {
+                                                    if (response.statusCode == 200) {     // HTTP OK
+                                                        val responseBody = String(response.data)
+                                                        val moshi = Moshi.Builder().add(KotlinJsonAdapterFactory()).build()
+                                                        val jsonAdapter = moshi.adapter(User::class.java)
+                                                        (application as SwiplistApplication).user = jsonAdapter.fromJson(responseBody)
+                                                        Snackbar.make(view, "Profile Refresh Success", Snackbar.LENGTH_LONG)
+                                                                .setAction("Action", null).show()
+                                                    }
+                                                }
+                                                is Result.Failure -> {
+                                                    val ex = result.getException()
+                                                    Log.d("re-exception", ex.toString())
+                                                    Toast.makeText(applicationContext, ex.toString(),
+                                                            Toast.LENGTH_LONG).show()
+                                                }
+                                            }
+                                        }
+                                        Snackbar.make(view, "Import Success, refreshing profile", Snackbar.LENGTH_LONG)
                                                 .setAction("Action", null).show()
                                     }
                                 }
@@ -105,7 +145,27 @@ class ImportDataActivity : AppCompatActivity(), OnItemSelectedListener, View.OnC
                             when (result) {
                                 is Result.Success -> {
                                     if (response.statusCode == 200) {     // HTTP OK
-                                        Snackbar.make(view, "Import Success", Snackbar.LENGTH_LONG)
+                                        Fuel.get(getString(R.string.server_base_url) + "/api/users/me").response { request, response, result ->
+                                            when (result) {
+                                                is Result.Success -> {
+                                                    if (response.statusCode == 200) {     // HTTP OK
+                                                        val responseBody = String(response.data)
+                                                        val moshi = Moshi.Builder().add(KotlinJsonAdapterFactory()).build()
+                                                        val jsonAdapter = moshi.adapter(User::class.java)
+                                                        (application as SwiplistApplication).user = jsonAdapter.fromJson(responseBody)
+                                                        Snackbar.make(view, "Profile Refresh Success", Snackbar.LENGTH_LONG)
+                                                                .setAction("Action", null).show()
+                                                    }
+                                                }
+                                                is Result.Failure -> {
+                                                    val ex = result.getException()
+                                                    Log.d("re-exception", ex.toString())
+                                                    Toast.makeText(applicationContext, ex.toString(),
+                                                            Toast.LENGTH_LONG).show()
+                                                }
+                                            }
+                                        }
+                                        Snackbar.make(view, "Import Success, refreshing profile", Snackbar.LENGTH_LONG)
                                                 .setAction("Action", null).show()
                                     }
                                 }
